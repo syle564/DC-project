@@ -42,7 +42,7 @@ public class Service {
 	
 
 /**
- * Creates new order 
+ * Creates new order. Represents Register order from our use cases 
  */
 	
 	/**
@@ -59,6 +59,13 @@ public class Service {
 		return order;
 	}
 	 
+	public void updateOrder(Order order,int totalWeight,int margin,Type lType){
+		
+		order.setlType(lType);
+		order.setMargin(margin);
+		order.setTotalWeight(totalWeight);
+		DataBase.getInstance().addOrder(order);
+	}
 
 	public void removeOrder(Order order)
 	{
@@ -77,6 +84,16 @@ public class Service {
 		DataBase.getInstance().removeTrailer(trailer);
 	}
 	
+	
+	public void updateTrailer(Trailer trailer,String company,String driver,String driverPhNum,Type lType )
+	{
+		trailer.setCompany(company);
+		trailer.setDriver(driver);
+		trailer.setDriverPhNum(driverPhNum);
+		trailer.setlType(lType);
+		DataBase.getInstance().addTrailer(trailer);
+		
+	}
 	public LoadingDock createLoadingDock(int dockID,Type lType,Status lStatus)
 	{
 		LoadingDock loadingDock=new LoadingDock(dockID, lType, lStatus);
@@ -112,15 +129,25 @@ public class Service {
 		load.setActualBegTime(DU.createDate());
 	}
 
-	
-    public void completeLoad(Suborder suborder)
+	/**
+	 * @author Momo
+	 *
+	 */
+    public boolean completeLoad(Suborder suborder)
     {
-    	
-    	
+    	boolean  truckReady=true;
+    	Trailer trailer =suborder.getlTrailer();
     	if(suborder.getlLoad()!=null)
     	suborder.getlLoad().setCompleted(true);
     	suborder.getlLoad().setActtualEndTime(DU.createDate());
     	
+    	for(Suborder s:trailer.getlSuborders())
+    	{
+    		if(!s.getlLoad().isCompleted())
+    			truckReady=false;
+ 
+    	}
+    	return truckReady;
     }
         
 	/**
@@ -209,6 +236,27 @@ public class Service {
 				lastLoad=l.getEstEndTime();
 		}
 		return lastLoad;
+	}
+	
+	public boolean weightOut(Trailer trailer,int weightOut,int margin)
+	{
+		int totalWeight = 0;
+		
+		for(Suborder s : trailer.getlSuborders()){
+			totalWeight+= s.getWeight();
+			}
+		if(totalWeight <= weightOut + margin && totalWeight > weightOut - margin  ){
+			trailer.setDeparted(true);
+			return true;
+		}
+		else{
+			registerIn(trailer.getTruckID(), trailer.getWeighIn(), trailer.getRestTime());
+			return false;
+		}
+	}
+	public Status DockStatus(LoadingDock loadingDock)
+	{
+		return loadingDock.getlStatus();
 	}
 	
 	}

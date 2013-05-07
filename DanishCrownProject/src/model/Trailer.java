@@ -12,8 +12,19 @@ private String driver;
 private String driverPhNum;
 private Date arrivalTime;
 private int restTime;
+private boolean departed;
+public boolean isDeparted() {
+	return departed;
+}
+
+public void setDeparted(boolean departed) {
+	this.departed = departed;
+}
+
+
 private Type lType;
 private ArrayList<Suborder> lSuborders;
+
 
 
 public Trailer(String truckID, String company, String driver,
