@@ -47,6 +47,8 @@ public static void main(String[] args) throws InterruptedException {
 	Thread.sleep(5000);
 	service.completeLoad(s1);
 	service.loadToDock(s1.getlLoad(), loadingD);
+	//sdasdassssssssssss
+	//dsdasdsadsdad
 }
 
 
