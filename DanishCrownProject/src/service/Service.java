@@ -161,11 +161,30 @@ public class Service {
 	foundT.setRestTime(restTime);
 	foundT.setWeighIn(weightIn);
 	foundT.setArrivalTime(DU.createDate());
-	System.out.println(foundT);
-	int timepassed=5;
+	ArrayList<LoadingDock> loadingDocks=DataBase.getInstance().getAllLoadingDocks();
+	
+	
+	
 	for(Suborder s : foundT.getlSuborders()){
-		s.setlLoad(createLoad(DU.createDate(timepassed), DU.createDate(timepassed+s.getLoadingTime()), s));
-		timepassed+=s.getLoadingTime()+5;
+		
+		Date plannedDate = DU.createDate();
+		LoadingDock appropriateDock = null;
+		for (LoadingDock lD : loadingDocks) {
+			if(findLastLoad(lD).compareTo(plannedDate)>0)
+				{plannedDate= findLastLoad(lD);
+				appropriateDock=lD;
+				}
+			else{
+				appropriateDock=loadingDocks.get(0);
+			}
+		}
+		
+		Load load=createLoad(DU.createDatePlusMinuts(plannedDate, 5), DU.createDatePlusMinuts(plannedDate, 5+s.getLoadingTime()), s);
+		s.setlLoad(load);
+		beginLoad(load);
+		loadToDock(load, appropriateDock);
+
+		
 		System.out.println(s.getlLoad().getEstStartTime());
 	}
 	}
@@ -182,7 +201,14 @@ public class Service {
 			loadingDock.setlStatus(Status.OCCUPIED);
 	}
 	
-	
-	
+	public Date findLastLoad(LoadingDock loadingDock)
+	{Date lastLoad = DU.createDate();
+		for( Load l:loadingDock.getlLoad())
+		{
+			if(l.getEstEndTime().compareTo(lastLoad)>0)
+				lastLoad=l.getEstEndTime();
+		}
+		return lastLoad;
+	}
 	
 	}

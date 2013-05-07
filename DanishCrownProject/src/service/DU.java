@@ -32,6 +32,17 @@ public abstract class DU
 		return (year % 400 == 0) || (year % 4 == 0 && year % 100 != 0);
 	}
 
+	public static Date createDatePlusMinuts(Date date, int minutes) {
+		GregorianCalendar gc = new GregorianCalendar();
+		gc.setTime(date);
+		gc.add(Calendar.MINUTE, minutes);
+
+		if (gc.get(Calendar.YEAR) < 1000 || gc.get(Calendar.YEAR) > 9999)
+			throw new IllegalArgumentException("Year out of bounds");
+
+		return gc.getTime();
+	}
+
 	/**
 	 * Returns the length of the month in the year.
 	 * @throws IllegalArgumentException 

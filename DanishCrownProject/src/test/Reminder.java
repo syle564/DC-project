@@ -41,14 +41,15 @@ public static void main(String[] args) throws InterruptedException {
 	Order o1=service.createOrder(1, 2000, 10, Type.BOX);
 	Trailer t1=service.createTrailer("1", "Cock", "Douche", "23123", Type.BOX);
 	Suborder s1=service.createSuborder(30, 200, DU.createDate(), o1, t1);
-	
+	Suborder s2=service.createSuborder(25, 200, DU.createDate(), o1, t1);
 	service.registerIn("1", 100, 30);
+
 	service.beginLoad(s1.getlLoad());
 	Thread.sleep(5000);
 	service.completeLoad(s1);
-	service.loadToDock(s1.getlLoad(), loadingD);
-	//sdasdassssssssssss
-	//dsdasdsadsdad
+	System.out.println(s1.getlLoad());
+	
+	
 }
 
 
