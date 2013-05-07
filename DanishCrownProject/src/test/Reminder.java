@@ -48,7 +48,7 @@ public static void main(String[] args) throws InterruptedException {
 	Thread.sleep(5000);
 	service.completeLoad(s1);
 	System.out.println(s1.getlLoad());
-	
+	System.out.println("qjjjjjjjjjjjjj");
 	
 }
 
