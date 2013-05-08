@@ -11,7 +11,10 @@ import model.Status;
 import model.Load;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
+
+import javax.crypto.spec.OAEPParameterSpec;
 
 
 
@@ -182,7 +185,7 @@ public class Service {
 	
 	 Trailer foundT = null;
 	 for(Trailer t : trailers){
-		if(t.getTruckID().compareTo(trailerID) == 0){
+		if(t.getTrailerID().compareTo(trailerID) == 0){
 			foundT = t;
 		}
 	foundT.setRestTime(restTime);
@@ -212,7 +215,7 @@ public class Service {
 		loadToDock(load, appropriateDock);
 
 		
-		System.out.println(s.getlLoad().getEstStartTime());
+		
 	}
 	}
 	 
@@ -221,8 +224,8 @@ public class Service {
 	public void loadToDock(Load load,LoadingDock loadingDock)
 	{
 	
-			if(load.getlSuborder().getlTrailer().getlType()==loadingDock.getlType() && loadingDock.getlStatus()==Status.OPEN)
-			{System.out.println(load);
+			if(load.getlSuborder().getlTrailer().getlType()==loadingDock.getlType() && (loadingDock.getlStatus()==Status.OPEN || loadingDock.getlStatus()==Status.OCCUPIED) )
+			{
 				loadingDock.addLoad(load);
 			}
 			loadingDock.setlStatus(Status.OCCUPIED);
@@ -250,7 +253,7 @@ public class Service {
 			return true;
 		}
 		else{
-			registerIn(trailer.getTruckID(), trailer.getWeighIn(), trailer.getRestTime());
+			registerIn(trailer.getTrailerID(), trailer.getWeighIn(), trailer.getRestTime());
 			return false;
 		}
 	}
@@ -258,5 +261,87 @@ public class Service {
 	{
 		return loadingDock.getlStatus();
 	}
+	
+
+	private  <T> void swap(ArrayList<T> list, int i1, int i2)
+	{
+		T temp = list.get(i1);
+		list.set(i1, list.get(i2));
+		list.set(i2, temp);
+	}
+	
+    public <T> ArrayList<T> quicSort(ArrayList<T> list,Comparator<T> comparator) 
+    {
+    	quicksortRec(list, comparator, 0, list.size()-1);
+    	
+		return list;
+ 
+    }
+    
+    private <T> void quicksortRec(ArrayList<T> list,Comparator<T> comparator, 
+            int low, int high){
+
+    	if (low < high) {
+
+    		int p = partition(list, comparator,low, high);
+
+    		quicksortRec(list,comparator, low, p-1);
+
+    		quicksortRec(list,comparator ,p+1, high);
+    		}
+    	}	
+    
+    private <T>  int partition(ArrayList<T> list,Comparator<T> comparator, int low, int high)
+	{
+		T e = list.get(low);
+		int i = low + 1;
+		int j = high;
+		while (i <= j) {
+			if (comparator.compare(list.get(i), e) <= 0 )
+				i++;
+			else if (comparator.compare(list.get(j), e) > 0)
+				j--;
+			else {
+				swap(list,i,j);
+				i++;
+				j--;
+			}
+		}
+		swap(list,low,j);
+		return j;
+	}
+    
+    public ArrayList<Trailer> getAvailbleTrailers()
+    {ArrayList<Trailer> availableTrailers = new ArrayList<Trailer>();
+    	
+     for(Trailer t: DataBase.getInstance().getAllTrailers())
+     {if(!t.isDeparted())
+    	 availableTrailers.add(t);
+    	 
+     }
+     
+     
+     return quicSort(availableTrailers, new TrailerIDComparator());
+    }
+
+    
+    public ArrayList<Load> getLoadsFrom(LoadingDock lDock)
+     {ArrayList<Load> loads=new ArrayList<Load>();
+      loads= lDock.getlLoad();
+      return quicSort(loads, new LoadTimeComparator());
+    	
+     }
+    
+    public ArrayList<LoadingDock> getAvailableDocks()
+    {
+    	ArrayList<LoadingDock> loadingDocks=new ArrayList<LoadingDock>();
+    	for(LoadingDock l:DataBase.getInstance().getAllLoadingDocks())
+    	{
+    		if(l.getlStatus()!=Status.CLOSED)
+    			loadingDocks.add(l);
+    	}
+    	
+    	return quicSort(loadingDocks, new DockIDComparator());
+    }
 	
 	}

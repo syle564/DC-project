@@ -5,7 +5,7 @@ import java.util.Date;
 
 
 public class Trailer implements Comparable<String> {
-private String truckID;
+private String trailerID;
 private String company;
 private int weighIn;
 private String driver;
@@ -13,6 +13,7 @@ private String driverPhNum;
 private Date arrivalTime;
 private int restTime;
 private boolean departed;
+
 public boolean isDeparted() {
 	return departed;
 }
@@ -22,15 +23,16 @@ public void setDeparted(boolean departed) {
 }
 
 
+
 private Type lType;
 private ArrayList<Suborder> lSuborders;
 
 
 
-public Trailer(String truckID, String company, String driver,
+public Trailer(String trailerID, String company, String driver,
 		String driverPhNum, Type lType) {
 	super();
-	this.truckID = truckID;
+	this.trailerID = trailerID;
 	this.company = company;
 	this.driver = driver;
 	this.driverPhNum = driverPhNum;
@@ -42,12 +44,12 @@ public Trailer() {
 	
 }
 
-public String getTruckID() {
-	return truckID;
+public String getTrailerID() {
+	return trailerID;
 }
 
-public void setTruckID(String truckID) {
-	this.truckID = truckID;
+public void setTrailerID(String trailerID) {
+	this.trailerID = trailerID;
 }
 
 public String getCompany() {
@@ -127,7 +129,7 @@ public void removeSuborder(Suborder suborder)
 
 @Override
 public String toString() {
-	return "ID:" + truckID + " weighIn:" + weighIn ;
+	return "ID:" + trailerID + " weighIn:" + weighIn ;
 }
 
 
@@ -138,7 +140,7 @@ public String toString() {
 @Override
 public int compareTo(String ID) {
 	
-	return this.truckID.compareTo(ID);
+	return this.trailerID.compareTo(ID);
 }
 
 

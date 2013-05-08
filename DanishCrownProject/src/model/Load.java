@@ -91,9 +91,8 @@ public class Load {
 
 	@Override
 	public String toString() {
-		return "Load [actualBegTime=" + actualBegTime + ", acttualEndTime="
-				+ acttualEndTime + ", estStartTime=" + estStartTime
-				+ ", estEndTime=" + estEndTime + "]";
+		return "Load :" +estStartTime+ " End time:" 
+				 + estEndTime;
 	}
 	
 	
