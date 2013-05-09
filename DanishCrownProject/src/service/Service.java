@@ -14,7 +14,7 @@ import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
 
-import javax.crypto.spec.OAEPParameterSpec;
+
 
 
 
@@ -55,13 +55,14 @@ public class Service {
 	 * @param lType
 	 * @return
 	 */
+	// Register Order
 	public Order createOrder(int orderId, int totalWeight, int margin, model.Type lType)
 	{
 		Order order=new Order(orderId,totalWeight,margin,lType);
 		DataBase.getInstance().addOrder(order);
 		return order;
 	}
-	 
+	 //Modify Order
 	public void updateOrder(Order order,int totalWeight,int margin,Type lType){
 		
 		order.setlType(lType);
@@ -70,24 +71,25 @@ public class Service {
 		DataBase.getInstance().addOrder(order);
 	}
 
+	//Remove Order
 	public void removeOrder(Order order)
 	{
 		DataBase.getInstance().removeOrder(order);
 	}
-	
+	//Create Trailer
 	public  Trailer createTrailer(String truckID, String company,String driver,String driverPhNum,Type lType)
 	{
 		Trailer trailer=new Trailer(truckID, company, driver, driverPhNum, lType);
 		DataBase.getInstance().addTrailer(trailer);
 		return trailer;
 	}
-	
+	//Remove trailer(not a use case)
 	public void removeTrailer(Trailer trailer)
 	{
 		DataBase.getInstance().removeTrailer(trailer);
 	}
 	
-	
+	//Maintain trailer information
 	public void updateTrailer(Trailer trailer,String company,String driver,String driverPhNum,Type lType )
 	{
 		trailer.setCompany(company);
@@ -97,12 +99,15 @@ public class Service {
 		DataBase.getInstance().addTrailer(trailer);
 		
 	}
+	
+	//not a use case
 	public LoadingDock createLoadingDock(int dockID,Type lType,Status lStatus)
 	{
 		LoadingDock loadingDock=new LoadingDock(dockID, lType, lStatus);
 		DataBase.getInstance().addLoadingDock(loadingDock);
 		return loadingDock;
 	}
+	//not a use case
 	public void removeLoadingDock(LoadingDock loadingDock)
 	{
 		DataBase.getInstance().removeLoadingDock(loadingDock);
@@ -119,6 +124,7 @@ public class Service {
 	 * @param loadingDock
 	 * @return
 	 */
+	//included in the Register trailer
 	public Load createLoad(Date estStartTime, Date estEndTime,Suborder suborder)
 	{
 		Load load=new Load(estStartTime, estEndTime);
@@ -126,7 +132,7 @@ public class Service {
 		load.setlSuborder(suborder);
 		return load;
 	}
-	
+	//not a use case
 	public void beginLoad(Load load)
 	{
 		load.setActualBegTime(DU.createDate());
@@ -136,6 +142,7 @@ public class Service {
 	 * @author Momo
 	 *
 	 */
+	//Load approved
     public boolean completeLoad(Suborder suborder)
     {
     	boolean  truckReady=true;
@@ -165,6 +172,7 @@ public class Service {
 	 * @param lTrailer
 	 * @return
 	 */
+  //not a use case
 	public Suborder createSuborder(int loadingTime,int weight, Date loadingDate,Order order,Trailer lTrailer)
 	{
 		Suborder suborder=new Suborder(loadingTime, weight, loadingDate);
@@ -173,12 +181,12 @@ public class Service {
 		order.addSuborder(suborder);
 		return suborder;
 	}
-	
+	//not a use case
 	public void removeSuborder(Order order, Suborder suborder)
 	{
 		order.getlSuborder().remove(suborder);
 	}
-	
+	//Register trailer as available
 	public void registerIn(String trailerID, int weightIn,int restTime)
 	{
 	 ArrayList<Trailer> trailers=DataBase.getInstance().getAllTrailers();
@@ -196,7 +204,7 @@ public class Service {
 	
 	
 	for(Suborder s : foundT.getlSuborders()){
-		
+		//finding the shortest queue 
 		Date plannedDate = DU.createDate();
 		LoadingDock appropriateDock = null;
 		for (LoadingDock lD : loadingDocks) {
@@ -220,7 +228,7 @@ public class Service {
 	}
 	 
 	}
-	
+	//included in the register trailer case
 	public void loadToDock(Load load,LoadingDock loadingDock)
 	{
 	
@@ -231,6 +239,7 @@ public class Service {
 			loadingDock.setlStatus(Status.OCCUPIED);
 	}
 	
+	//not a use case
 	public Date findLastLoad(LoadingDock loadingDock)
 	{Date lastLoad = DU.createDate();
 		for( Load l:loadingDock.getlLoad())
@@ -240,7 +249,7 @@ public class Service {
 		}
 		return lastLoad;
 	}
-	
+	//Register weight of the trailer before departure
 	public boolean weightOut(Trailer trailer,int weightOut,int margin)
 	{
 		int totalWeight = 0;
@@ -257,19 +266,20 @@ public class Service {
 			return false;
 		}
 	}
+	//Get loading dock status
 	public Status DockStatus(LoadingDock loadingDock)
 	{
 		return loadingDock.getlStatus();
 	}
 	
-
+	//not a use case
 	private  <T> void swap(ArrayList<T> list, int i1, int i2)
 	{
 		T temp = list.get(i1);
 		list.set(i1, list.get(i2));
 		list.set(i2, temp);
 	}
-	
+	//not a use case
     public <T> ArrayList<T> quicSort(ArrayList<T> list,Comparator<T> comparator) 
     {
     	quicksortRec(list, comparator, 0, list.size()-1);
@@ -277,7 +287,7 @@ public class Service {
 		return list;
  
     }
-    
+  //not a use case
     private <T> void quicksortRec(ArrayList<T> list,Comparator<T> comparator, 
             int low, int high){
 
@@ -290,7 +300,7 @@ public class Service {
     		quicksortRec(list,comparator ,p+1, high);
     		}
     	}	
-    
+  //not a use case
     private <T>  int partition(ArrayList<T> list,Comparator<T> comparator, int low, int high)
 	{
 		T e = list.get(low);
@@ -310,7 +320,7 @@ public class Service {
 		swap(list,low,j);
 		return j;
 	}
-    
+    //Get list of available trailers
     public ArrayList<Trailer> getAvailbleTrailers()
     {ArrayList<Trailer> availableTrailers = new ArrayList<Trailer>();
     	
@@ -324,14 +334,14 @@ public class Service {
      return quicSort(availableTrailers, new TrailerIDComparator());
     }
 
-    
+    //Get list of loading times(from specific loading dock's loads)
     public ArrayList<Load> getLoadsFrom(LoadingDock lDock)
      {ArrayList<Load> loads=new ArrayList<Load>();
       loads= lDock.getlLoad();
       return quicSort(loads, new LoadTimeComparator());
     	
      }
-    
+    //Get list of availabale docks
     public ArrayList<LoadingDock> getAvailableDocks()
     {
     	ArrayList<LoadingDock> loadingDocks=new ArrayList<LoadingDock>();
