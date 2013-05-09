@@ -23,7 +23,7 @@ public class WareHouseUI extends JFrame {
 	 */
 	public WareHouseUI() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 520, 368);
+		setBounds(100, 100, 653, 397);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));

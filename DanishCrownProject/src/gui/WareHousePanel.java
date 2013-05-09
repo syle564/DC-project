@@ -12,6 +12,7 @@ import javax.swing.table.DefaultTableColumnModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.DefaultTableModel;
 
+import model.Load;
 import model.LoadingDock;
 
 import service.Service;
@@ -30,6 +31,7 @@ public class WareHousePanel extends JPanel {
 	private DefaultListModel model;
 	private JTable table;
 
+	private Service  service=Service.getInstance();
 	/**
 	 * Create the panel.
 	 */
@@ -40,34 +42,32 @@ public class WareHousePanel extends JPanel {
 		
 		
 		scrollPane = new JScrollPane();
-		scrollPane.setBounds(30, 59, 420, 204);
+		scrollPane.setBounds(30, 59, 524, 204);
 		add(scrollPane);
 		
 		table = new JTable();
 		table.setModel(new DefaultTableModel(
-			new Object[][] {
-				{null, null, null, null, null},
-				{null, null, null, null, null},
-				{null, null, null, null, null},
-				{null, null, null, null, null},
-				{null, null, null, null, null},
-			},
+			new Object[][] {},
 			new String[] {
-				"New column", "New column", "New column", "New column", "New column"
+				"EstimatedStart", "EstimtedEnd", "ActualStart", "ActualEnd", "New column"
 			}
 		));
 		scrollPane.setViewportView(table);
 		model =new DefaultListModel<>();
 		
 		cmbSelectDock = new JComboBox();
-		cmbSelectDock.setBounds(311, 23, 105, 20);
+		cmbSelectDock.setBounds(447, 28, 105, 20);
 		add(cmbSelectDock);
 		
 		btnBeginLoad = new JButton("Begin Load");
 		btnBeginLoad.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				DefaultTableModel model= (DefaultTableModel)table.getModel();
-				model.addRow(new Object[]{"dsd","dsds","sdd","sd","sd"});
+				for(Load l:service.getLoadsFrom(service.getAvailableDocks().get(0)))
+				{
+					model.addRow(new Object[]{l.getEstStartTime(),"dsds","sdd","sd","sd"});
+				}
+				
 			}
 		});
 		btnBeginLoad.setBounds(209, 292, 89, 23);
@@ -81,8 +81,7 @@ public class WareHousePanel extends JPanel {
 				    for( int i = model.getRowCount() - 1; i >= 0; i-- ) {
 				        model.removeRow(i);
 				    }
-				
-
+			
 				
 			}
 		});
