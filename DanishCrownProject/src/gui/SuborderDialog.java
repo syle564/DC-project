@@ -12,6 +12,10 @@ import javax.swing.JTextField;
 import javax.swing.JScrollPane;
 import javax.swing.JList;
 
+import model.Suborder;
+
+import java.awt.Toolkit;
+
 public class SuborderDialog extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
@@ -22,25 +26,16 @@ public class SuborderDialog extends JDialog {
 	private JLabel lblLoadingTime;
 	private JLabel lblLoadingDate;
 	private JLabel lblListOfAvailable;
+	private Suborder suborder;
 	private JList list;
 
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		try {
-			SuborderDialog dialog = new SuborderDialog();
-			dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-			dialog.setVisible(true);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+
 
 	/**
 	 * Create the dialog.
 	 */
 	public SuborderDialog() {
+		setIconImage(Toolkit.getDefaultToolkit().getImage(SuborderDialog.class.getResource("/resources/DCLogo.jpeg")));
 		setTitle("Suborder Dialog");
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(new BorderLayout());
@@ -113,6 +108,17 @@ public class SuborderDialog extends JDialog {
 				buttonPane.add(cancelButton);
 			}
 		}
+	}
+	
+	public SuborderDialog(Suborder suborder)
+	{
+		this.suborder=suborder;
+		new SuborderDialog();
+		if(suborder!=null)
+		{
+			txtLoadingtime.setText(suborder.getLoadingTime()+"");
+		}
+		
 	}
 
 }

@@ -9,6 +9,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JButton;
+import java.awt.Toolkit;
 
 public class TruckerUIFrame extends JFrame {
 
@@ -41,6 +42,7 @@ public class TruckerUIFrame extends JFrame {
 	 * Create the frame.
 	 */
 	public TruckerUIFrame() {
+		setIconImage(Toolkit.getDefaultToolkit().getImage(TruckerUIFrame.class.getResource("/resources/DCLogo.jpeg")));
 		setTitle("TruckerUI");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 240, 300);

@@ -9,34 +9,37 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JTabbedPane;
 import java.awt.Toolkit;
 
-public class WareHouseUI extends JFrame {
+public class DCPlannerUI extends JFrame {
 
 	private JPanel contentPane;
-	private WareHousePanel wareHousePanel;
 	private JTabbedPane tabbedPane;
+	private CreateTrailerPane createTrailerPane; 
+	private HandleOrderPane handleOrderPane;
 
-	/**
-	 * Launch the application.
-	 */
+
+
 
 	/**
 	 * Create the frame.
 	 */
-	public WareHouseUI() {
-		setIconImage(Toolkit.getDefaultToolkit().getImage(WareHouseUI.class.getResource("/resources/DCLogo.jpeg")));
-		setTitle("WareHouseUI");
+	public DCPlannerUI() {
+		setIconImage(Toolkit.getDefaultToolkit().getImage(DCPlannerUI.class.getResource("/resources/DCLogo.jpeg")));
+		setTitle("DanishCrownUI");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 653, 397);
+		setBounds(100, 100, 661, 461);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
 		
 		tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		wareHousePanel=new WareHousePanel();
 		contentPane.add(tabbedPane, BorderLayout.CENTER);
 		
-	    tabbedPane.add("Loading Times",wareHousePanel);
+		createTrailerPane =new CreateTrailerPane();
+		tabbedPane.add("Manage trailers",createTrailerPane);
+		
+		handleOrderPane= new HandleOrderPane();
+		tabbedPane.add("Orders",handleOrderPane);
 	}
 
 }

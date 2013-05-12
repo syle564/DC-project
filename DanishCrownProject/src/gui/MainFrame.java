@@ -2,8 +2,10 @@ package gui;
 
 import java.awt.EventQueue;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JButton;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.UIManager;
 
@@ -22,6 +24,8 @@ import dao.DataBase;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.util.Comparator;
+import java.awt.Toolkit;
+
 
 public class MainFrame {
 	static {
@@ -37,6 +41,12 @@ public class MainFrame {
 	private JButton btnDanishPlannerUi;
 	private JButton btnTruckerUi;
 	private JButton btnWarehouseUi;
+	private ImageIcon imgDcLogo;
+	private JLabel lblDclogo;
+	private WareHouseUI wareHouseUI;
+	private TruckerUIFrame truckerUI;
+	private DCPlannerUI dcPlannerUI;
+	private Controller controller;
 
 	/**
 	 * Launch the application.
@@ -67,6 +77,7 @@ public class MainFrame {
 			public void run() {
 				try {
 					MainFrame window = new MainFrame();
+					
 					window.frmDanishCrownProject.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -86,31 +97,66 @@ public class MainFrame {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
+		controller=new Controller();
+		
 		frmDanishCrownProject = new JFrame();
+		frmDanishCrownProject.setIconImage(Toolkit.getDefaultToolkit().getImage(MainFrame.class.getResource("/resources/DCLogo.jpeg")));
 		frmDanishCrownProject.setTitle("Danish Crown Project");
 		frmDanishCrownProject.setBounds(100, 100, 450, 300);
 		frmDanishCrownProject.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmDanishCrownProject.getContentPane().setLayout(null);
 		
 		btnDanishPlannerUi = new JButton("D.C. Planner UI");
+		btnDanishPlannerUi.addActionListener(controller);
 		btnDanishPlannerUi.setBounds(20, 177, 124, 37);
 		frmDanishCrownProject.getContentPane().add(btnDanishPlannerUi);
 		
 		btnTruckerUi = new JButton("Trucker UI");
+		btnTruckerUi.addActionListener(controller);
 		btnTruckerUi.setBounds(176, 177, 101, 37);
 		frmDanishCrownProject.getContentPane().add(btnTruckerUi);
 		
 		btnWarehouseUi = new JButton("Warehouse UI");
-		btnWarehouseUi.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				JFrame wH=new WareHouseUI();
-				wH.setVisible(true);
-			   
-			}
-		});
+		btnWarehouseUi.addActionListener(controller);
 		btnWarehouseUi.setBounds(303, 177, 110, 37);
 		frmDanishCrownProject.getContentPane().add(btnWarehouseUi);
 		
+		lblDclogo = new JLabel("DClogo");
+		lblDclogo.setIcon(new ImageIcon(MainFrame.class.getResource("/resources/DCLogo.jpeg")));
+		lblDclogo.setBounds(73, 41, 295, 125);
+		frmDanishCrownProject.getContentPane().add(lblDclogo);
+		
 			
+		 
+	}
+	/**
+	 * @author Momo
+	 *Custom Event Listener
+	 */
+ private class Controller implements ActionListener
+	{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if(e.getSource()==btnWarehouseUi)
+			{
+				 wareHouseUI=new WareHouseUI();
+				wareHouseUI.setVisible(true);
+			}
+			
+			
+			if(e.getSource()==btnTruckerUi)
+			{
+				truckerUI=new TruckerUIFrame();
+				truckerUI.setVisible(true);
+			}
+			
+			if(e.getSource()==btnDanishPlannerUi)
+			{
+				dcPlannerUI=new DCPlannerUI();
+				dcPlannerUI.setVisible(true);
+			}
+		}
+		
 	}
 }

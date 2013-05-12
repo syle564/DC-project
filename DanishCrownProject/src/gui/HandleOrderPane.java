@@ -9,7 +9,10 @@ import java.awt.event.ActionEvent;
 import javax.swing.JScrollPane;
 import javax.swing.JList;
 
-public class HandleOrder extends JPanel {
+import model.Order;
+import model.Suborder;
+
+public class HandleOrderPane extends JPanel {
 	private JTextField txtOrderid;
 	private JTextField txtTotalweight;
 	private JTextField txtMargin;
@@ -27,16 +30,18 @@ public class HandleOrder extends JPanel {
 	private JButton btnDeleteord;
 	private JTextField txtSearchordid;
 	private JScrollPane scrollPane_1;
-	private JList list_1;
+	private JList<Order> lstOrders;
 	private JLabel lblOrders;
-	private JList list;
+	private JList<Suborder> lstSub;
+	private Controller controller;
 
 	/**
 	 * Create the panel.
 	 */
-	public HandleOrder() {
+	public HandleOrderPane() {
 		setLayout(null);
-		
+		 
+		controller=new Controller();
 		lblOrderid = new JLabel("OrderID #");
 		lblOrderid.setBounds(10, 28, 67, 14);
 		add(lblOrderid);
@@ -90,6 +95,7 @@ public class HandleOrder extends JPanel {
 		add(btnRemovesub);
 		
 		btnAddsub = new JButton("AddSub");
+		btnAddsub.addActionListener(controller);
 		btnAddsub.setBounds(194, 252, 89, 23);
 		add(btnAddsub);
 		
@@ -98,10 +104,7 @@ public class HandleOrder extends JPanel {
 		add(btnSearchordid);
 		
 		btnUpdate = new JButton("UpdateOrd");
-		btnUpdate.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-			}
-		});
+		btnUpdate.addActionListener(controller);
 		btnUpdate.setBounds(320, 58, 106, 23);
 		add(btnUpdate);
 		
@@ -113,8 +116,8 @@ public class HandleOrder extends JPanel {
 		scrollPane.setBounds(320, 186, 106, 152);
 		add(scrollPane);
 		
-		list = new JList();
-		scrollPane.setViewportView(list);
+		lstSub = new JList();
+		scrollPane.setViewportView(lstSub);
 		
 		JLabel lblSuborders = new JLabel("Suborders :");
 		lblSuborders.setBounds(345, 164, 67, 14);
@@ -130,13 +133,38 @@ public class HandleOrder extends JPanel {
 		scrollPane_1.setBounds(473, 71, 131, 267);
 		add(scrollPane_1);
 		
-		list_1 = new JList();
-		scrollPane_1.setViewportView(list_1);
+		lstOrders = new JList();
+		scrollPane_1.setViewportView(lstOrders);
 		
 		lblOrders = new JLabel("Orders :");
 		lblOrders.setBounds(506, 56, 98, 14);
 		add(lblOrders);
 
 	}
+	
+	private class Controller implements ActionListener
+	{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+		        if(e.getSource()==btnAddsub)
+		        {
+		        	SuborderDialog subDioalog=new SuborderDialog();
+		        	subDioalog.setVisible(true);
+		        }
+		        
+		        if(e.getSource()==btnModifysub )
+		        {
+		        	if(lstSub.getSelectedIndex()!=-1 )
+		        	{
+		        		SuborderDialog subDioalog=new SuborderDialog(lstSub.getSelectedValue());
+			        	subDioalog.setVisible(true);
+		        	}
+		        }
+			
+		}
+		
+	}
+	
 
 }
