@@ -26,7 +26,7 @@ public class WareHouseUI extends JFrame {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(WareHouseUI.class.getResource("/resources/DCLogo.jpeg")));
 		setTitle("WareHouseUI");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 653, 397);
+		setBounds(100, 100, 734, 397);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));

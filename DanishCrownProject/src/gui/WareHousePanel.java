@@ -1,5 +1,6 @@
 package gui;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -23,12 +24,13 @@ import java.util.Vector;
 import javax.swing.JList;
 
 public class WareHousePanel extends JPanel {
+	
 	private JScrollPane scrollPane;
 	private JButton btnBeginLoad;
 	private JButton btnLoadApproved;
-	private JComboBox cmbSelectDock;
+	private JComboBox<LoadingDock> cmbSelectDock;
 
-	private DefaultListModel model;
+	private DefaultComboBoxModel<LoadingDock> model;
 	private JTable table;
 
 	private Service  service=Service.getInstance();
@@ -42,51 +44,66 @@ public class WareHousePanel extends JPanel {
 		
 		
 		scrollPane = new JScrollPane();
-		scrollPane.setBounds(30, 59, 524, 204);
+		scrollPane.setBounds(30, 59, 645, 204);
 		add(scrollPane);
 		
 		table = new JTable();
 		table.setModel(new DefaultTableModel(
 			new Object[][] {},
 			new String[] {
-				"EstimatedStart", "EstimtedEnd", "ActualStart", "ActualEnd", "New column"
+				"EstimatedStart", "EstimtedEnd", "ActualStart", "ActualEnd", "TrailerID"
 			}
 		));
 		scrollPane.setViewportView(table);
-		model =new DefaultListModel<>();
+		model =new DefaultComboBoxModel<LoadingDock>();
 		
-		cmbSelectDock = new JComboBox();
-		cmbSelectDock.setBounds(447, 28, 105, 20);
+		cmbSelectDock = new JComboBox<LoadingDock>();
+		cmbSelectDock.setBounds(570, 28, 105, 20);
+		cmbSelectDock.setModel(model);
 		add(cmbSelectDock);
 		
 		btnBeginLoad = new JButton("Begin Load");
 		btnBeginLoad.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				DefaultTableModel model= (DefaultTableModel)table.getModel();
-				for(Load l:service.getLoadsFrom(service.getAvailableDocks().get(0)))
-				{
-					model.addRow(new Object[]{l.getEstStartTime(),"dsds","sdd","sd","sd"});
-				}
 				
+				updateTableView();
 			}
 		});
-		btnBeginLoad.setBounds(209, 292, 89, 23);
+		btnBeginLoad.setBounds(471, 292, 89, 23);
 		this.add(btnBeginLoad);
 		
 		btnLoadApproved = new JButton("Load Approved");
 		btnLoadApproved.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				DefaultTableModel model= (DefaultTableModel)table.getModel();
-				
-				    for( int i = model.getRowCount() - 1; i >= 0; i-- ) {
-				        model.removeRow(i);
-				    }
-			
-				
+			//	table.get
+			clearTable();		
 			}
 		});
-		btnLoadApproved.setBounds(311, 292, 105, 23);
+		btnLoadApproved.setBounds(570, 292, 105, 23);
 		add(btnLoadApproved);
-
+		fillDocks();
+	}
+	
+	private void fillDocks()
+	{
+		for(LoadingDock lD:service.getAvailableDocks())
+		model.addElement(lD);
+	}
+	private void clearTable()
+	{
+		DefaultTableModel model= (DefaultTableModel)table.getModel();
+		
+	    for( int i = model.getRowCount() - 1; i >= 0; i-- ) {
+	        model.removeRow(i);
+	    }
+	}
+	private void updateTableView()
+	{   clearTable();
+		DefaultTableModel model= (DefaultTableModel)table.getModel();
+		for(Load l:service.getLoadsFrom((LoadingDock) cmbSelectDock.getSelectedItem()))
+		{
+			model.addRow(new Object[]{l.getEstStartTime(),l.getEstEndTime(),l.getActualBegTime(),
+					l.getActtualEndTime(),l.getlSuborder().getlTrailer().getTrailerID()});
+		}
 	}
 }

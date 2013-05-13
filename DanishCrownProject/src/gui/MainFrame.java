@@ -72,7 +72,7 @@ public class MainFrame {
 		//System.out.println(s1.getlLoad());
 		Comparator c=new LoadTimeComparator();
 		
-		loadingD.addLoad(new Load(DU.createDate(), DU.createDate()));
+		//loadingD.addLoad(new Load(DU.createDate(), DU.createDate()));
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {

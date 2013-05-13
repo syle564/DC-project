@@ -58,7 +58,7 @@ public class LoadingDock {
 
 	@Override
 	public String toString() {
-		return "LoadingDock [dockID=" + dockID + "]";
+		return "DockID:" + dockID ;
 	}
 
 	

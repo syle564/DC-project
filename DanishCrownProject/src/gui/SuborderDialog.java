@@ -13,6 +13,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JList;
 
 import model.Suborder;
+import model.Trailer;
 
 import java.awt.Toolkit;
 
@@ -27,7 +28,7 @@ public class SuborderDialog extends JDialog {
 	private JLabel lblLoadingDate;
 	private JLabel lblListOfAvailable;
 	private Suborder suborder;
-	private JList list;
+	private JList<Trailer> lstTrailers;
 
 
 
@@ -88,8 +89,8 @@ public class SuborderDialog extends JDialog {
 			scrollPane.setBounds(261, 49, 86, 169);
 			contentPanel.add(scrollPane);
 			{
-				list = new JList();
-				scrollPane.setViewportView(list);
+				lstTrailers = new JList();
+				scrollPane.setViewportView(lstTrailers);
 			}
 		}
 		{
