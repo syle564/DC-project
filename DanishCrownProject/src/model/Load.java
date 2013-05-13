@@ -20,10 +20,11 @@ public class Load {
 	}
 
 
-	public Load(Date estStartTime, Date estEndTime) {
+	public Load(Date estStartTime, Date estEndTime,Suborder suborder) {
 		super();
 		this.estStartTime = estStartTime;
 		this.estEndTime = estEndTime;
+		this.lSuborder=suborder;
 	}
 
 

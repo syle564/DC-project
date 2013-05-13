@@ -9,11 +9,12 @@ public class Suborder {
 	private Trailer lTrailer;
 	private Load lLoad;
 	
-	public Suborder(int loadingTime, int weight, Date loadingDate) {
+	public Suborder(int loadingTime, int weight, Date loadingDate, Trailer trailer) {
 		super();
 		this.loadingTime = loadingTime;
 		this.weight = weight;
 		this.loadingDate = loadingDate;
+		this.lTrailer=trailer;
 	}
 	
 	public Suborder(){}

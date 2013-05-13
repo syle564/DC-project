@@ -127,9 +127,8 @@ public class Service {
 	//included in the Register trailer
 	public Load createLoad(Date estStartTime, Date estEndTime,Suborder suborder)
 	{
-		Load load=new Load(estStartTime, estEndTime);
-		suborder.setlLoad(load);
-		load.setlSuborder(suborder);
+		Load load=new Load(estStartTime, estEndTime, suborder);
+		suborder.setlLoad(load);	
 		return load;
 	}
 	//not a use case
@@ -175,8 +174,7 @@ public class Service {
   //not a use case
 	public Suborder createSuborder(int loadingTime,int weight, Date loadingDate,Order order,Trailer lTrailer)
 	{
-		Suborder suborder=new Suborder(loadingTime, weight, loadingDate);
-		suborder.setlTrailer(lTrailer);
+		Suborder suborder=new Suborder(loadingTime, weight, loadingDate,lTrailer);
 		lTrailer.addlSuborders(suborder);
 		order.addSuborder(suborder);
 		return suborder;

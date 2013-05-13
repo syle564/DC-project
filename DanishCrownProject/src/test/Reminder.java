@@ -60,7 +60,7 @@ public static void main(String[] args) throws InterruptedException {
 	//System.out.println(s1.getlLoad());
 	Comparator c=new LoadTimeComparator();
 	
-	loadingD.addLoad(new Load(DU.createDate(), DU.createDate()));
+	//loadingD.addLoad(new Load(DU.createDate(), DU.createDate(),s));
 	System.out.println(loadingD.getlLoad());
 	Thread.sleep(1000);
 for(Object l: service.quicSort(loadingD.getlLoad(),c))
