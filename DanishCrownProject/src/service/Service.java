@@ -65,10 +65,8 @@ public class Service {
 	 //Modify Order
 	public void updateOrder(Order order,int totalWeight,int margin,Type lType){
 		
-		order.setlType(lType);
-		order.setMargin(margin);
-		order.setTotalWeight(totalWeight);
-		DataBase.getInstance().addOrder(order);
+		
+		DataBase.getInstance().updateOrder(order,totalWeight,margin,lType);
 	}
 
 	//Remove Order
@@ -90,14 +88,9 @@ public class Service {
 	}
 	
 	//Maintain trailer information
-	public void updateTrailer(Trailer trailer,String company,String driver,String driverPhNum,Type lType )
+	public void updateTrailer(Trailer trailer,String truckID,String company,String driver,String driverPhNum,Type lType )
 	{
-		trailer.setCompany(company);
-		trailer.setDriver(driver);
-		trailer.setDriverPhNum(driverPhNum);
-		trailer.setlType(lType);
-		DataBase.getInstance().addTrailer(trailer);
-		
+		DataBase.getInstance().updateTrailer(trailer, truckID, company, driver, driverPhNum, lType);	
 	}
 	
 	//not a use case
@@ -125,11 +118,10 @@ public class Service {
 	 * @return
 	 */
 	//included in the Register trailer
-	public Load createLoad(Date estStartTime, Date estEndTime,Suborder suborder)
+	public Load createLoad(Date estStartTime, Date estEndTime,Suborder suborder,LoadingDock loadingDock)
 	{
-		Load load=new Load(estStartTime, estEndTime);
+		Load load=new Load(estStartTime, estEndTime,suborder,loadingDock);
 		suborder.setlLoad(load);
-		load.setlSuborder(suborder);
 		return load;
 	}
 	//not a use case
@@ -175,8 +167,7 @@ public class Service {
   //not a use case
 	public Suborder createSuborder(int loadingTime,int weight, Date loadingDate,Order order,Trailer lTrailer)
 	{
-		Suborder suborder=new Suborder(loadingTime, weight, loadingDate);
-		suborder.setlTrailer(lTrailer);
+		Suborder suborder=new Suborder(loadingTime, weight, loadingDate,lTrailer);
 		lTrailer.addlSuborders(suborder);
 		order.addSuborder(suborder);
 		return suborder;
@@ -217,7 +208,7 @@ public class Service {
 			}
 		}
 		
-		Load load=createLoad(DU.createDatePlusMinuts(plannedDate, 5), DU.createDatePlusMinuts(plannedDate, 5+s.getLoadingTime()), s);
+		Load load=createLoad(DU.createDatePlusMinuts(plannedDate, 5), DU.createDatePlusMinuts(plannedDate, 5+s.getLoadingTime()), s,appropriateDock);
 		s.setlLoad(load);
 		beginLoad(load);
 		loadToDock(load, appropriateDock);
