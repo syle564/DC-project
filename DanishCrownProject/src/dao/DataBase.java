@@ -157,11 +157,13 @@ public class DataBase implements DAO {
 			}
 		}
 		for(Load loa:lo.getlLoad()){
-			if(loa.equals(load)){
+			if(loa.getEstStartTime().equals(load.getEstStartTime())){
 				loadd=loa;
 			}
 		}
-		loadd.setActtualEndTime(actualEndTime);
+		
+		System.out.println(loadd);
+		loadd.setActualEndTime(actualEndTime);
 		loadd.setActualBegTime(actualBegTime);
 		loadd.setCompleted(completed);
 		loadd.setEstEndTime(estEndTime);

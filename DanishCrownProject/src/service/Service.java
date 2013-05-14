@@ -125,9 +125,10 @@ public class Service {
 		return load;
 	}
 	//not a use case
-	public void beginLoad(Load load)
+	public void beginLoad(Load load,LoadingDock loadingDock)
 	{
-		load.setActualBegTime(DU.createDate());
+		DataBase.getInstance().updateLoad(load, load.getEstStartTime(), load.getEstEndTime(), loadingDock, load.isCompleted(), DU.createDate(), null);
+		
 	}
 
 	/**
@@ -135,15 +136,19 @@ public class Service {
 	 *
 	 */
 	//Load approved
-    public boolean completeLoad(Suborder suborder)
+    public boolean completeLoad(Load load, LoadingDock loadingDock,String trailerID)
     {
-    	boolean  truckReady=true;
-    	Trailer trailer =suborder.getlTrailer();
-    	if(suborder.getlLoad()!=null)
-    	suborder.getlLoad().setCompleted(true);
-    	suborder.getlLoad().setActtualEndTime(DU.createDate());
+    	DataBase.getInstance().updateLoad(load, load.getEstStartTime(), load.getEstEndTime(), loadingDock, true, load.getActualBegTime(),DU.createDate());
+    	ArrayList<Trailer> trailers=DataBase.getInstance().getAllTrailers();
+    	 Trailer foundT = null;
+    	 for(Trailer t : trailers){
+    			if(t.getTrailerID().equals(trailerID))
+    				foundT = t;
+    				}
     	
-    	for(Suborder s:trailer.getlSuborders())
+    	boolean  truckReady=true;
+    	
+    	for(Suborder s:foundT.getlSuborders())
     	{
     		if(!s.getlLoad().isCompleted())
     			truckReady=false;
@@ -177,23 +182,28 @@ public class Service {
 	{
 		order.getlSuborder().remove(suborder);
 	}
+	
+	
 	//Register trailer as available
-	public void registerIn(String trailerID, int weightIn,int restTime)
+	public boolean registerIn(String trailerID, int weightIn,int restTime,String phoneNumb)
 	{
 	 ArrayList<Trailer> trailers=DataBase.getInstance().getAllTrailers();
-	
+	 ArrayList<LoadingDock> loadingDocks=DataBase.getInstance().getAllLoadingDocks();
 	 Trailer foundT = null;
 	 for(Trailer t : trailers){
-		if(t.getTrailerID().compareTo(trailerID) == 0){
+		if(t.getTrailerID().equals(trailerID)){
 			foundT = t;
-		}
+		
 	foundT.setRestTime(restTime);
 	foundT.setWeighIn(weightIn);
+	foundT.setDriverPhNum(phoneNumb);
 	foundT.setArrivalTime(DU.createDate());
-	ArrayList<LoadingDock> loadingDocks=DataBase.getInstance().getAllLoadingDocks();
+		}
 	
+	 }
 	
-	
+	 if(foundT!=null)
+	 {
 	for(Suborder s : foundT.getlSuborders()){
 		//finding the shortest queue 
 		Date plannedDate = DU.createDate();
@@ -209,16 +219,22 @@ public class Service {
 		}
 		
 		Load load=createLoad(DU.createDatePlusMinuts(plannedDate, 5), DU.createDatePlusMinuts(plannedDate, 5+s.getLoadingTime()), s,appropriateDock);
-		s.setlLoad(load);
-		beginLoad(load);
-		loadToDock(load, appropriateDock);
-
+		//s.setlLoad(load);
+		//beginLoad(load);
+		//loadToDock(load, appropriateDock);
+		
 		
 		
 	}
-	}
+	return true;
+	 }
 	 
+	
+	 else return false;
+	
 	}
+	
+	//obsolete
 	//included in the register trailer case
 	public void loadToDock(Load load,LoadingDock loadingDock)
 	{
@@ -253,7 +269,7 @@ public class Service {
 			return true;
 		}
 		else{
-			registerIn(trailer.getTrailerID(), trailer.getWeighIn(), trailer.getRestTime());
+			registerIn(trailer.getTrailerID(), trailer.getWeighIn(), trailer.getRestTime(),trailer.getDriverPhNum());
 			return false;
 		}
 	}

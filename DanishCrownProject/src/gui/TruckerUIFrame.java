@@ -9,7 +9,13 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JButton;
+
+import service.Service;
+
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.Color;
 
 public class TruckerUIFrame extends JFrame {
 
@@ -21,6 +27,8 @@ public class TruckerUIFrame extends JFrame {
 	private JButton btnSignIn;
 	private JTextField txtResttime;
 	private JLabel lblRestTime;
+	private Controller controller;
+	private JLabel lblFound;
 
 	/**
 	 * Launch the application.
@@ -42,6 +50,8 @@ public class TruckerUIFrame extends JFrame {
 	 * Create the frame.
 	 */
 	public TruckerUIFrame() {
+		controller=new Controller();
+		
 		setIconImage(Toolkit.getDefaultToolkit().getImage(TruckerUIFrame.class.getResource("/resources/DCLogo.jpeg")));
 		setTitle("TruckerUI");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -82,7 +92,46 @@ public class TruckerUIFrame extends JFrame {
 		txtResttime.setColumns(10);
 		
 		btnSignIn = new JButton("Sign In");
+		btnSignIn.addActionListener(controller);
 		btnSignIn.setBounds(34, 209, 89, 23);
 		contentPane.add(btnSignIn);
+		
+		lblFound = new JLabel("");
+		
+		lblFound.setBounds(10, 243, 88, 14);
+		contentPane.add(lblFound);
+	}
+	
+	private class Controller implements ActionListener
+	{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if(e.getSource()==btnSignIn)
+			{
+				if(txtPhone.getText().length()>0 && txtResttime.getText().length()>0 && txtTrailerid.getText().length()>0)
+				{
+					String phone,trailerId;
+					int restTime=Integer.parseInt(txtResttime.getText());
+					phone=txtPhone.getText();
+					trailerId=txtTrailerid.getText();
+					if(Service.getInstance().registerIn(trailerId, 2222, restTime,phone))
+					{   lblFound.setForeground(Color.GREEN);
+						lblFound.setText("Success");
+						txtTrailerid.setText("");
+						txtPhone.setText("");
+						txtResttime.setText("");
+					}
+							
+					else {	lblFound.setForeground(Color.RED);
+							lblFound.setText("Invalid ID");
+					}
+				}
+			}
+			
+		}
+
+		
+		
 	}
 }

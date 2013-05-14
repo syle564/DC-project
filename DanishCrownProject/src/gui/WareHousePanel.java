@@ -1,27 +1,24 @@
 package gui;
 
 import javax.swing.DefaultComboBoxModel;
-import javax.swing.DefaultListModel;
-import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JComboBox;
 import javax.swing.JButton;
-import javax.swing.table.DefaultTableCellRenderer;
-import javax.swing.table.DefaultTableColumnModel;
-import javax.swing.table.TableColumn;
 import javax.swing.table.DefaultTableModel;
-
 import model.Load;
 import model.LoadingDock;
-
+import service.DU;
 import service.Service;
-
+import java.awt.Component;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.util.Vector;
-import javax.swing.JList;
+import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
+
 
 public class WareHousePanel extends JPanel {
 	
@@ -32,6 +29,7 @@ public class WareHousePanel extends JPanel {
 
 	private DefaultComboBoxModel<LoadingDock> model;
 	private JTable table;
+	private Controller controller = new Controller(); 
 
 	private Service  service=Service.getInstance();
 	/**
@@ -51,7 +49,7 @@ public class WareHousePanel extends JPanel {
 		table.setModel(new DefaultTableModel(
 			new Object[][] {},
 			new String[] {
-				"EstimatedStart", "EstimtedEnd", "ActualStart", "ActualEnd", "TrailerID"
+				"EstimatedStart", "EstimtedEnd", "ActualStart", "ActualEnd", "Completed","TrailerID",
 			}
 		));
 		scrollPane.setViewportView(table);
@@ -63,25 +61,17 @@ public class WareHousePanel extends JPanel {
 		add(cmbSelectDock);
 		
 		btnBeginLoad = new JButton("Begin Load");
-		btnBeginLoad.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-				updateTableView();
-			}
-		});
+		btnBeginLoad.addActionListener(controller);
 		btnBeginLoad.setBounds(471, 292, 89, 23);
 		this.add(btnBeginLoad);
 		
 		btnLoadApproved = new JButton("Load Approved");
-		btnLoadApproved.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			//	table.get
-			clearTable();		
-			}
-		});
+		btnLoadApproved.addActionListener(controller);
 		btnLoadApproved.setBounds(570, 292, 105, 23);
 		add(btnLoadApproved);
 		fillDocks();
+		
+		updateTableView();
 	}
 	
 	private void fillDocks()
@@ -103,7 +93,65 @@ public class WareHousePanel extends JPanel {
 		for(Load l:service.getLoadsFrom((LoadingDock) cmbSelectDock.getSelectedItem()))
 		{
 			model.addRow(new Object[]{l.getEstStartTime(),l.getEstEndTime(),l.getActualBegTime(),
-					l.getActtualEndTime(),l.getlSuborder().getlTrailer().getTrailerID()});
+					l.getActtualEndTime(),l.isCompleted(),l.getlSuborder().getlTrailer().getTrailerID()});
 		}
+	}
+	
+	private Component getthis()
+	{
+		return this;
+	}
+	
+	private class Controller implements ActionListener{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			if(e.getSource()== btnBeginLoad){
+			Date estStartDate=(Date)table.getValueAt(table.getSelectedRow(), 0);
+			Date estEndDate=(Date)table.getValueAt(table.getSelectedRow(), 1);
+			Date actualStartTime=(Date)table.getValueAt(table.getSelectedRow(), 2);
+			Date actualEndTime=(Date)table.getValueAt(table.getSelectedRow(), 3);
+			boolean isCompleted=(boolean)table.getValueAt(table.getSelectedRow(), 4);
+			System.out.println(estEndDate.getTime());
+			Load load=new Load(actualStartTime,actualEndTime,estStartDate,estEndDate,isCompleted);
+			service.beginLoad(load, (LoadingDock)cmbSelectDock.getSelectedItem());
+			updateTableView();
+	
+			}
+			
+			if(e.getSource()==btnLoadApproved)
+			{Date estStartDate=(Date)table.getValueAt(table.getSelectedRow(), 0);
+			Date estEndDate=(Date)table.getValueAt(table.getSelectedRow(), 1);
+			Date actualStartTime=(Date)table.getValueAt(table.getSelectedRow(), 2);
+			Date actualEndTime=(Date)table.getValueAt(table.getSelectedRow(), 3);
+			boolean isCompleted=(boolean)table.getValueAt(table.getSelectedRow(), 4);
+			String trailerID=(String)table.getValueAt(table.getSelectedRow(), 5);
+			Load load=new Load(actualStartTime,actualEndTime,estStartDate,estEndDate,isCompleted);
+			if(service.completeLoad(load, (LoadingDock)cmbSelectDock.getSelectedItem(), trailerID))
+				{updateTableView();
+				new Reminder(DU.createDate(1));
+				}
+			}
+			
+		}
+	
+}
+	
+	
+	public class Reminder {
+	    Timer timer;
+
+	    public Reminder(Date timeOfExecution) {
+	        timer = new Timer();
+	        timer.schedule(new RemindTask(), timeOfExecution );
+		
+	    }
+
+	    class RemindTask extends TimerTask {
+	        public void run() {
+	        	JOptionPane.showMessageDialog(getthis(), "Trailer ready for pickup!");
+	            timer.cancel(); 
+	        }
+	    }
 	}
 }

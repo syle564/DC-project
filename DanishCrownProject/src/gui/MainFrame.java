@@ -58,19 +58,20 @@ public class MainFrame {
 		Order o1=service.createOrder(1, 2000, 10, Type.BOX);
 		Trailer t1=service.createTrailer("1", "Cock", "Douche", "23123", Type.BOX);
 		Suborder s1=service.createSuborder(30, 200, DU.createDate(), o1, t1);
-		Suborder s2=service.createSuborder(25, 200, DU.createDate(), o1, t1);
-		service.registerIn("1", 100, 30);
-		Trailer t2=service.createTrailer("5", "Cock", "Douche", "23123", Type.CHRISTMAS_TREE);
-		Trailer t3=service.createTrailer("2", "Cock", "Douche", "23123", Type.BIN);
-		service.beginLoad(s1.getlLoad());
-		service.beginLoad(s2.getlLoad());
-		for(LoadingDock l:DataBase.getInstance().getAllLoadingDocks() )
+		Trailer t2=service.createTrailer("10", "Cock", "Douche", "23123", Type.BOX);
+		Suborder s2=service.createSuborder(25, 200, DU.createDate(), o1, t2);
+		//service.registerIn("1", 100, 30);
+		
+	//	Trailer t3=service.createTrailer("2", "Cock", "Douche", "23123", Type.BIN);
+		//service.beginLoad(s1.getlLoad());
+		//service.beginLoad(s2.getlLoad());
+	//	for(LoadingDock l:DataBase.getInstance().getAllLoadingDocks() )
 			
 			//System.out.println(l.getlLoad());
 
-		service.completeLoad(s1);
+	//	service.completeLoad(s1);
 		//System.out.println(s1.getlLoad());
-		Comparator c=new LoadTimeComparator();
+	//	Comparator c=new LoadTimeComparator();
 		
 		//loadingD.addLoad(new Load(DU.createDate(), DU.createDate()));
 		EventQueue.invokeLater(new Runnable() {
@@ -102,28 +103,28 @@ public class MainFrame {
 		frmDanishCrownProject = new JFrame();
 		frmDanishCrownProject.setIconImage(Toolkit.getDefaultToolkit().getImage(MainFrame.class.getResource("/resources/DCLogo.jpeg")));
 		frmDanishCrownProject.setTitle("Danish Crown Project");
-		frmDanishCrownProject.setBounds(100, 100, 450, 300);
+		frmDanishCrownProject.setBounds(100, 100, 769, 445);
 		frmDanishCrownProject.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmDanishCrownProject.getContentPane().setLayout(null);
 		
 		btnDanishPlannerUi = new JButton("D.C. Planner UI");
 		btnDanishPlannerUi.addActionListener(controller);
-		btnDanishPlannerUi.setBounds(20, 177, 124, 37);
+		btnDanishPlannerUi.setBounds(73, 360, 124, 37);
 		frmDanishCrownProject.getContentPane().add(btnDanishPlannerUi);
 		
 		btnTruckerUi = new JButton("Trucker UI");
 		btnTruckerUi.addActionListener(controller);
-		btnTruckerUi.setBounds(176, 177, 101, 37);
+		btnTruckerUi.setBounds(319, 360, 101, 37);
 		frmDanishCrownProject.getContentPane().add(btnTruckerUi);
 		
 		btnWarehouseUi = new JButton("Warehouse UI");
 		btnWarehouseUi.addActionListener(controller);
-		btnWarehouseUi.setBounds(303, 177, 110, 37);
+		btnWarehouseUi.setBounds(566, 360, 110, 37);
 		frmDanishCrownProject.getContentPane().add(btnWarehouseUi);
 		
 		lblDclogo = new JLabel("DClogo");
-		lblDclogo.setIcon(new ImageIcon(MainFrame.class.getResource("/resources/DCLogo.jpeg")));
-		lblDclogo.setBounds(73, 41, 295, 125);
+		lblDclogo.setIcon(new ImageIcon(MainFrame.class.getResource("/resources/DCLogo_2.jpg")));
+		lblDclogo.setBounds(101, 11, 551, 327);
 		frmDanishCrownProject.getContentPane().add(lblDclogo);
 		
 			

@@ -6,7 +6,7 @@ import java.util.Date;
 public class Load {
 
 	private Date actualBegTime;
-	private Date acttualEndTime;
+	private Date actualEndTime;
 	private Date estStartTime;
 	private Date estEndTime;
 	private boolean completed;
@@ -28,6 +28,18 @@ public class Load {
 		loadingDock.addLoad(this);
 	}
 
+	
+
+	public Load(Date actualBegTime, Date acttualEndTime, Date estStartTime,
+			Date estEndTime, boolean completed) {
+		super();
+		this.actualBegTime = actualBegTime;
+		this.actualEndTime = acttualEndTime;
+		this.estStartTime = estStartTime;
+		this.estEndTime = estEndTime;
+		this.completed = completed;
+	}
+
 
 	public Date getActualBegTime() {
 		return actualBegTime;
@@ -40,12 +52,12 @@ public class Load {
 
 
 	public Date getActtualEndTime() {
-		return acttualEndTime;
+		return actualEndTime;
 	}
 
 
-	public void setActtualEndTime(Date acttualEndTime) {
-		this.acttualEndTime = acttualEndTime;
+	public void setActualEndTime(Date acttualEndTime) {
+		this.actualEndTime = acttualEndTime;
 	}
 
 
