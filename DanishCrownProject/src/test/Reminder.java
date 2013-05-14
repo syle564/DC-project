@@ -17,7 +17,7 @@ import service.DU;
 import service.LoadTimeComparator;
 import service.Service;
 
-	
+
 public class Reminder {
     Timer timer;
 
@@ -33,7 +33,6 @@ public class Reminder {
             timer.cancel(); //Terminate the timer thread
         }
     }
-	
 
 	
 

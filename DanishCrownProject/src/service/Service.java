@@ -120,6 +120,8 @@ public class Service {
 	//included in the Register trailer
 	public Load createLoad(Date estStartTime, Date estEndTime,Suborder suborder,LoadingDock loadingDock)
 	{
+		if(estStartTime.compareTo(estEndTime)>=0 || estEndTime.getHours()==23L || estStartTime.getHours()<6L || loadingDock.getlStatus()==Status.CLOSED )
+			return null;
 		Load load=new Load(estStartTime, estEndTime,suborder,loadingDock);
 		suborder.setlLoad(load);
 		return load;
@@ -159,7 +161,7 @@ public class Service {
         
 	/**
 	 * @author The smoking ace's
-	 *Creates a suborder belonging to order and that is attached to a Trailer 
+	 *Creates a suborder belonging to order and that is attached to a Trailer s
 	 */
 	/**
 	 * @param loadingTime
@@ -187,6 +189,13 @@ public class Service {
 	//Register trailer as available
 	public boolean registerIn(String trailerID, int weightIn,int restTime,String phoneNumb)
 	{
+		if(restTime < 0 || restTime > 240)
+			return false;
+		if(phoneNumb.length() > 15 || phoneNumb.length() <= 0 ||trailerID.length() > 10 )
+			return false;
+		if(weightIn>26000 || weightIn<0)
+		return false;
+		
 	 ArrayList<Trailer> trailers=DataBase.getInstance().getAllTrailers();
 	 ArrayList<LoadingDock> loadingDocks=DataBase.getInstance().getAllLoadingDocks();
 	 Trailer foundT = null;

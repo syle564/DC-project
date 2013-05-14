@@ -103,28 +103,28 @@ public class MainFrame {
 		frmDanishCrownProject = new JFrame();
 		frmDanishCrownProject.setIconImage(Toolkit.getDefaultToolkit().getImage(MainFrame.class.getResource("/resources/DCLogo.jpeg")));
 		frmDanishCrownProject.setTitle("Danish Crown Project");
-		frmDanishCrownProject.setBounds(100, 100, 769, 445);
+		frmDanishCrownProject.setBounds(100, 100, 565, 366);
 		frmDanishCrownProject.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmDanishCrownProject.getContentPane().setLayout(null);
 		
 		btnDanishPlannerUi = new JButton("D.C. Planner UI");
 		btnDanishPlannerUi.addActionListener(controller);
-		btnDanishPlannerUi.setBounds(73, 360, 124, 37);
+		btnDanishPlannerUi.setBounds(29, 275, 124, 37);
 		frmDanishCrownProject.getContentPane().add(btnDanishPlannerUi);
 		
 		btnTruckerUi = new JButton("Trucker UI");
 		btnTruckerUi.addActionListener(controller);
-		btnTruckerUi.setBounds(319, 360, 101, 37);
+		btnTruckerUi.setBounds(199, 275, 101, 37);
 		frmDanishCrownProject.getContentPane().add(btnTruckerUi);
 		
 		btnWarehouseUi = new JButton("Warehouse UI");
 		btnWarehouseUi.addActionListener(controller);
-		btnWarehouseUi.setBounds(566, 360, 110, 37);
+		btnWarehouseUi.setBounds(370, 275, 110, 37);
 		frmDanishCrownProject.getContentPane().add(btnWarehouseUi);
 		
 		lblDclogo = new JLabel("DClogo");
 		lblDclogo.setIcon(new ImageIcon(MainFrame.class.getResource("/resources/DCLogo_2.jpg")));
-		lblDclogo.setBounds(101, 11, 551, 327);
+		lblDclogo.setBounds(0, 0, 551, 327);
 		frmDanishCrownProject.getContentPane().add(lblDclogo);
 		
 			
