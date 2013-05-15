@@ -38,8 +38,9 @@ public class DCPlannerUI extends JFrame {
 		createTrailerPane =new CreateTrailerPane();
 		tabbedPane.add("Manage trailers",createTrailerPane);
 		
-		handleOrderPane= new HandleOrderPane();
+		handleOrderPane= new HandleOrderPane(this);
 		tabbedPane.add("Orders",handleOrderPane);
 	}
+
 
 }

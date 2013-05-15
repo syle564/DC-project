@@ -59,6 +59,8 @@ public class MainFrame {
 		Trailer t1=service.createTrailer("1", "Cock", "Douche", "23123", Type.BOX);
 		Suborder s1=service.createSuborder(30, 200, DU.createDate(), o1, t1);
 		Trailer t2=service.createTrailer("10", "Cock", "Douche", "23123", Type.BOX);
+		Trailer t3=service.createTrailer("5", "Cock", "Douche", "23123", Type.BOX);
+		Trailer t4=service.createTrailer("4", "Cock", "Douche", "23123", Type.CHRISTMAS_TREE);
 		Suborder s2=service.createSuborder(25, 200, DU.createDate(), o1, t2);
 		//service.registerIn("1", 100, 30);
 		

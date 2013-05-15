@@ -1,21 +1,30 @@
 package gui;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Container;
 import java.awt.FlowLayout;
 
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.DefaultListModel;
+import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JScrollPane;
 import javax.swing.JList;
 
+import service.DU;
+import service.Service;
+
 import model.Suborder;
 import model.Trailer;
 
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 public class SuborderDialog extends JDialog {
 
@@ -29,13 +38,25 @@ public class SuborderDialog extends JDialog {
 	private JLabel lblListOfAvailable;
 	private Suborder suborder;
 	private JList<Trailer> lstTrailers;
+	private DefaultListModel<Trailer> trailerModel;
+	private JButton okButton;
+	private JButton cancelButton;
+	private Controller controller;
 
 
 
 	/**
 	 * Create the dialog.
 	 */
-	public SuborderDialog() {
+	public SuborderDialog(Suborder suborder, JFrame owner, ModalityType modality) {
+		
+		
+		
+		super(owner, modality);
+		this.suborder=suborder;
+		controller= new Controller();
+		
+		
 		setIconImage(Toolkit.getDefaultToolkit().getImage(SuborderDialog.class.getResource("/resources/DCLogo.jpeg")));
 		setTitle("Suborder Dialog");
 		setBounds(100, 100, 450, 300);
@@ -74,7 +95,7 @@ public class SuborderDialog extends JDialog {
 		}
 		{
 			txtLoadingdate = new JTextField();
-			txtLoadingdate.setText("LoadingDate");
+			txtLoadingdate.setText("yyyy-mm-dd");
 			txtLoadingdate.setBounds(10, 161, 86, 20);
 			contentPanel.add(txtLoadingdate);
 			txtLoadingdate.setColumns(10);
@@ -89,7 +110,9 @@ public class SuborderDialog extends JDialog {
 			scrollPane.setBounds(261, 49, 86, 169);
 			contentPanel.add(scrollPane);
 			{
-				lstTrailers = new JList();
+				lstTrailers = new JList<Trailer>();
+				trailerModel= new DefaultListModel<Trailer>();
+				lstTrailers.setModel(trailerModel);
 				scrollPane.setViewportView(lstTrailers);
 			}
 		}
@@ -98,28 +121,64 @@ public class SuborderDialog extends JDialog {
 			buttonPane.setLayout(new FlowLayout(FlowLayout.RIGHT));
 			getContentPane().add(buttonPane, BorderLayout.SOUTH);
 			{
-				JButton okButton = new JButton("OK");
+				okButton = new JButton("OK");
 				okButton.setActionCommand("OK");
+				okButton.addActionListener(controller);
 				buttonPane.add(okButton);
 				getRootPane().setDefaultButton(okButton);
 			}
 			{
-				JButton cancelButton = new JButton("Cancel");
+				cancelButton = new JButton("Cancel");
+				cancelButton.addActionListener(controller);
 				cancelButton.setActionCommand("Cancel");
 				buttonPane.add(cancelButton);
 			}
+			fillTrailers();
 		}
 	}
 	
-	public SuborderDialog(Suborder suborder)
+	private void fillTrailers()
 	{
-		this.suborder=suborder;
-		new SuborderDialog();
-		if(suborder!=null)
+		trailerModel.clear();
+		for(Trailer t:Service.getInstance().getAvailbleTrailers())
 		{
-			txtLoadingtime.setText(suborder.getLoadingTime()+"");
+			trailerModel.addElement(t);
+		}
+	}
+	
+	public Suborder getSuborder()
+	{
+		return suborder;
+	}
+	
+	private  SuborderDialog getThis()
+	{
+		return this;
+	}
+	class Controller implements ActionListener
+	{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			
+			if(e.getSource()==okButton)
+			{
+				if(lstTrailers.getSelectedIndex()!=-1)
+				{
+				suborder= new Suborder(Integer.parseInt(txtLoadingtime.getText()),Integer.parseInt(txtLoadingweight.getText()),
+						DU.createDate(txtLoadingdate.getText()),lstTrailers.getSelectedValue());
+				getThis().setVisible(false);
+				}
+			}
+				
+			
+			if(e.getSource()==cancelButton)
+			{
+				getThis().setVisible(false);
+			}
 		}
 		
 	}
+
 
 }

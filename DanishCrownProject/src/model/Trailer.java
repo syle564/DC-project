@@ -129,7 +129,7 @@ public void removeSuborder(Suborder suborder)
 
 @Override
 public String toString() {
-	return "ID:" + trailerID + " weighIn:" + weighIn ;
+	return "ID: " + trailerID + ", Cargo:"+lType;
 }
 
 

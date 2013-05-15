@@ -62,6 +62,12 @@ public class Service {
 		DataBase.getInstance().addOrder(order);
 		return order;
 	}
+	
+	//returns a sorted list of the orders
+	public ArrayList<Order> getAllOrders()
+	{
+		return quicSort(DataBase.getInstance().getOrder(), new OrderIDComparator());
+	}
 	 //Modify Order
 	public void updateOrder(Order order,int totalWeight,int margin,Type lType){
 		
@@ -315,7 +321,9 @@ public class Service {
 
     		quicksortRec(list,comparator ,p+1, high);
     		}
-    	}	
+    }	
+    
+    
   //not a use case
     private <T>  int partition(ArrayList<T> list,Comparator<T> comparator, int low, int high)
 	{
@@ -336,6 +344,8 @@ public class Service {
 		swap(list,low,j);
 		return j;
 	}
+    
+    
     //Get list of available trailers
     public ArrayList<Trailer> getAvailbleTrailers()
     {ArrayList<Trailer> availableTrailers = new ArrayList<Trailer>();
@@ -346,7 +356,7 @@ public class Service {
     	 
      }
      
-     
+     System.out.println(quicSort(availableTrailers, new TrailerIDComparator()));
      return quicSort(availableTrailers, new TrailerIDComparator());
     }
 

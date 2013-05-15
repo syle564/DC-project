@@ -1,6 +1,11 @@
 package gui;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
+
 import javax.swing.DefaultComboBoxModel;
+import javax.swing.DefaultListModel;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
@@ -9,6 +14,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JList;
 import javax.swing.JComboBox;
 
+import service.Service;
+
+import model.Trailer;
 import model.Type;
 
 public class CreateTrailerPane extends JPanel {
@@ -19,7 +27,8 @@ public class CreateTrailerPane extends JPanel {
 	private JTextField txtDriver;
 	private JTextField txtSearchid;
 	private JScrollPane scrollPane;
-	private JList list;
+	private JList<Trailer> listTrailer;
+	private DefaultListModel<Trailer> trailerModel;
 	private JButton btnSave;
 	private JButton btnUpdate;
 	private JButton btnDelete;
@@ -27,12 +36,15 @@ public class CreateTrailerPane extends JPanel {
 	private JLabel lblTrucksInSystem;
 	private JComboBox<Type> cmbxCargo;
 	private DefaultComboBoxModel<Type> cmbxCargoModel;
+	private Controller controller;
 
 	/**
 	 * Create the panel.
 	 */
 	public CreateTrailerPane() {
 		setLayout(null);
+		
+		controller= new Controller();
 		
 		lblCompany = new JLabel("Company : ");
 		lblCompany.setBounds(10, 43, 65, 14);
@@ -69,10 +81,12 @@ public class CreateTrailerPane extends JPanel {
 		add(lblCargoType);
 		
 		btnSave = new JButton("Save");
+		btnSave.addActionListener(controller);
 		btnSave.setBounds(10, 341, 89, 23);
 		add(btnSave);
 		
 		btnSearchid = new JButton("SearchID");
+		btnSearchid.addActionListener(controller);
 		btnSearchid.setBounds(206, 39, 89, 23);
 		add(btnSearchid);
 		
@@ -83,10 +97,12 @@ public class CreateTrailerPane extends JPanel {
 		txtSearchid.setColumns(10);
 		
 		btnUpdate = new JButton("Update");
+		btnUpdate.addActionListener(controller);
 		btnUpdate.setBounds(206, 111, 89, 23);
 		add(btnUpdate);
 		
 		btnDelete = new JButton("Delete");
+		btnDelete.addActionListener(controller);
 		btnDelete.setBounds(206, 144, 89, 23);
 		add(btnDelete);
 		
@@ -94,14 +110,19 @@ public class CreateTrailerPane extends JPanel {
 		scrollPane.setBounds(322, 115, 110, 260);
 		add(scrollPane);
 		
-		list = new JList();
-		scrollPane.setViewportView(list);
+		listTrailer = new JList<Trailer>();
+		scrollPane.setViewportView(listTrailer);
+		
+		trailerModel= new DefaultListModel<Trailer>();
+		listTrailer.setModel(trailerModel);
+		
+		
 		
 		lblTrucksInSystem = new JLabel("Trucks in System :");
 		lblTrucksInSystem.setBounds(327, 88, 105, 14);
 		add(lblTrucksInSystem);
 		
-		cmbxCargo = new JComboBox();
+		cmbxCargo = new JComboBox<Type>();
 		cmbxCargo.setBounds(10, 299, 117, 20);
 		add(cmbxCargo);
 		
@@ -110,6 +131,92 @@ public class CreateTrailerPane extends JPanel {
 		cmbxCargoModel.addElement(Type.BIN);
 		cmbxCargoModel.addElement(Type.BOX);
 		cmbxCargo.setModel(cmbxCargoModel);
+		
+		fillTrailers();
 
+	}
+	
+	private void fillTrailers()
+	{
+		trailerModel.clear();
+		for(Trailer t: Service.getInstance().getAvailbleTrailers())
+		{
+			trailerModel.addElement(t);
+		}
+		System.out.println( Service.getInstance().getAvailbleTrailers());
+	}
+	
+	
+	class Controller implements ActionListener
+ 	{
+
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			
+			if(e.getSource()==btnSave)
+			{
+				if(listTrailer.getSelectedIndex()!=-1)
+				{Service.getInstance().updateTrailer(listTrailer.getSelectedValue(), 
+				txtTrailerid.getText(), txtCompany.getText(), txtDriver.getText(), "", (Type)cmbxCargo.getSelectedItem());}
+				else{
+				Service.getInstance().createTrailer(txtTrailerid.getText(), 
+				txtCompany.getText(), txtDriver.getText(), "", (Type)cmbxCargo.getSelectedItem());}
+				fillTrailers();
+			}
+			
+			if(e.getSource()==btnDelete)
+			{
+				Service.getInstance().removeTrailer(listTrailer.getSelectedValue());
+				fillTrailers();
+			}
+			if(e.getSource()==btnUpdate)
+			{
+				if(listTrailer.getSelectedIndex()!=-1)
+				{
+					Trailer t= listTrailer.getSelectedValue();
+					txtCompany.setText(t.getCompany());
+					txtDriver.setText(t.getDriver());
+					txtTrailerid.setText(t.getTrailerID());
+					
+					int i=0;
+					if(t.getlType().equals(Type.CHRISTMAS_TREE))
+						i=0;
+					if(t.getlType().equals(Type.BIN))
+						i=1;
+					if(t.getlType().equals(Type.BOX))
+						i=2;
+					cmbxCargo.setSelectedIndex(i);
+				}
+				
+				
+			}
+			
+			if(e.getSource()==btnSearchid)
+			{
+				Trailer found = null;
+
+				String target= txtSearchid.getText();
+				
+				int left = 0;
+				int right = trailerModel.getSize() - 1;
+				int middle = 0;
+				while (found == null && left <= right) {
+					middle = (right + left) / 2;
+					if (trailerModel.get(middle).getTrailerID().equals(target)) {
+						found = trailerModel.get(middle);
+					} else if (trailerModel.get(middle).compareTo(target)>0)
+						{right = middle - 1;
+						
+						}
+						
+					else
+						left = middle + 1;
+				}
+
+				if(found!=null)
+				{listTrailer.setSelectedValue(found, true);}
+			}
+		}
+		
 	}
 }
