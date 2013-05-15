@@ -15,6 +15,7 @@ import service.Service;
 import java.awt.Component;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -129,7 +130,7 @@ public class WareHousePanel extends JPanel {
 			Load load=new Load(actualStartTime,actualEndTime,estStartDate,estEndDate,isCompleted);
 			if(service.completeLoad(load, (LoadingDock)cmbSelectDock.getSelectedItem(), trailerID))
 				{updateTableView();
-				new Reminder(DU.createDate(1));
+				new Reminder(DU.createDate());
 				}
 			}
 			

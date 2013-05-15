@@ -26,10 +26,14 @@ public class ServiceTest {
 	LoadingDock loadingDCl=service.createLoadingDock(3, Type.BOX, Status.CLOSED);
 	Order o1=service.createOrder(1, 2000, 10, Type.BOX);
 	Trailer t1=service.createTrailer("1", "Cool Company", "Bob Smith", "23123", Type.BOX);
-	Suborder s1=service.createSuborder(30, 200, DU.createDate(), o1, t1);
+	Suborder s1=service.createSuborder(30, 14000, DU.createDate(), o1, t1);
 	Trailer t2=service.createTrailer("10", "Silver Star", "Joe Doe", "67676", Type.BOX);
 	Suborder s2=service.createSuborder(25, 200, DU.createDate(), o1, t2);
 	Trailer t3=service.createTrailer("5", "Filth Bar", "Joseph Blot", "45454", Type.BOX);
+	Date now=DU.createDate();
+	Date after4hours=DU.createDatePlusMinuts(now, 240);
+	Date inahour=DU.createDatePlusMinuts(now, 60);
+	
 	
 	@Before
 	public void setUp() throws Exception {
@@ -242,39 +246,106 @@ public class ServiceTest {
 	}
 	@Test
 	public void testCreateLoad_Test_1(){
-		Date now=DU.createDate();
+		
 		assertTrue(Service.getInstance().createLoad(now, now, s1, loadingD)==null);
 	}
 	@Test
 	public void testCreateLoad_Test_2(){
-		assertFalse(Service.getInstance().registerIn("2222222222", 30000, 250, "8778876778744449"));
+		assertFalse(Service.getInstance().createLoad(now, after4hours, s1, loadingD)==null);
 	}
 	@Test
 	public void testCreateLoad_Test_3(){
-		assertFalse(Service.getInstance().registerIn("2222222222", 30000, 250, "8778876778744449"));
+		assertFalse(Service.getInstance().createLoad(now, inahour, s1, loadingD)==null);
 	}
 	@Test
 	public void testCreateLoad_Test_4(){
-		assertFalse(Service.getInstance().registerIn("2222222222", 30000, 250, "8778876778744449"));
+		
+		assertTrue(Service.getInstance().createLoad(now, now, s1, loadingDOcc)==null);
 	}
 	@Test
 	public void testCreateLoad_Test_5(){
-		assertFalse(Service.getInstance().registerIn("2222222222", 30000, 250, "8778876778744449"));
+		assertFalse(Service.getInstance().createLoad(now, after4hours, s1, loadingDOcc)==null);
 	}
 	@Test
-	public void testCreateLoad_Test_6(){
-		assertFalse(Service.getInstance().registerIn("2222222222", 30000, 250, "8778876778744449"));
+	public void testCreateLoad_Test_6()
+	{	
+		assertFalse(Service.getInstance().createLoad(now, inahour, s1, loadingDOcc)==null);
+		}
+	
+		@Test
+		public void testCreateLoad_Test_7(){
+			
+			assertTrue(Service.getInstance().createLoad(now, now, s1, loadingDCl)==null);}
+		
+
+		@Test
+		public void testCreateLoad_Test_8(){
+			assertTrue(Service.getInstance().createLoad(now, after4hours, s1, loadingDCl)==null);}
+		
+		
+		@Test
+		public void testCreateLoad_Test_9(){
+			assertTrue(Service.getInstance().createLoad(now, inahour, s1, loadingDCl)==null);
+			}
+	@Test
+	public void testWeightOut_Test_1(){
+		t1.setWeighIn(10000);
+		s1.setWeight(14000);
+		o1.setMargin(10);
+			assertTrue(Service.getInstance().weightOut(t1, 24000, 10));
+	}
+	
+	
+	@Test
+	public void testWeightOut_Test_2(){
+		t1.setWeighIn(10000);
+		s1.setWeight(14000);
+		o1.setMargin(-50);
+			assertFalse(Service.getInstance().weightOut(t1, 24000, -50));
 	}
 	@Test
-	public void testCreateLoad_Test_7(){
-		assertFalse(Service.getInstance().registerIn("2222222222", 30000, 250, "8778876778744449"));
+	public void testWeightOut_Test_3(){
+		t1.setWeighIn(10000);
+		s1.setWeight(14000);
+		o1.setMargin(10);
+		assertFalse(Service.getInstance().weightOut(t1, 30000, 10));
 	}
 	@Test
-	public void testCreateLoad_Test_8(){
-		assertFalse(Service.getInstance().registerIn("2222222222", 30000, 250, "8778876778744449"));
+	public void testWeightOut_Test_4(){
+		t1.setWeighIn(10000);
+		s1.setWeight(14000);
+		o1.setMargin(-50);
+		assertFalse(Service.getInstance().weightOut(t1, 30000, -50));
 	}
 	@Test
-	public void testCreateLoad_Test_9(){
-		assertFalse(Service.getInstance().registerIn("2222222222", 30000, 250, "8778876778744449"));
+	public void testWeightOut_Test_5(){
+		t1.setWeighIn(20000);
+		s1.setWeight(14000);
+		o1.setMargin(10);
+		assertFalse(Service.getInstance().weightOut(t1, 24000, 10));
 	}
+	@Test
+	public void testWeightOut_Test_6(){
+		t1.setWeighIn(20000);
+		s1.setWeight(14000);
+		o1.setMargin(-50);
+		assertFalse(Service.getInstance().weightOut(t1, 24000, -50));
+	}
+	@Test
+	public void testWeightOut_Test_7(){
+		t1.setWeighIn(20000);
+		s1.setWeight(14000);
+		o1.setMargin(10);
+		assertFalse(Service.getInstance().weightOut(t1, 30000, 10));
+	}
+	@Test
+	public void testWeightOut_Test_8(){
+		t1.setWeighIn(20000);
+		s1.setWeight(14000);
+		o1.setMargin(-50);
+		assertFalse(Service.getInstance().weightOut(t1, 30000, -50));
+	}
+	
+	
+	
 }

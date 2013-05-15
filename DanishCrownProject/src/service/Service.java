@@ -199,7 +199,7 @@ public class Service {
 			return false;
 		if(phoneNumb.length() > 15 || phoneNumb.length() <= 0 ||trailerID.length() > 10 )
 			return false;
-		if(weightIn>26000 || weightIn<0)
+		if(weightIn>14000 || weightIn<0)
 		return false;
 		
 	 ArrayList<Trailer> trailers=DataBase.getInstance().getAllTrailers();
@@ -274,11 +274,13 @@ public class Service {
 	//Register weight of the trailer before departure
 	public boolean weightOut(Trailer trailer,int weightOut,int margin)
 	{
+		if(margin<0 || weightOut>26000)
+			return false;
 		int totalWeight = 0;
-		
 		for(Suborder s : trailer.getlSuborders()){
 			totalWeight+= s.getWeight();
 			}
+		totalWeight+=trailer.getWeighIn();
 		if(totalWeight <= weightOut + margin && totalWeight > weightOut - margin  ){
 			trailer.setDeparted(true);
 			return true;
