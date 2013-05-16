@@ -46,7 +46,9 @@ public class MainFrame {
 	private WareHouseUI wareHouseUI;
 	private TruckerUIFrame truckerUI;
 	private DCPlannerUI dcPlannerUI;
+	private TruckerSignOutFrame truckerSignOutFrame;
 	private Controller controller;
+	private JButton btnSignOut;
 
 	/**
 	 * Launch the application.
@@ -111,18 +113,23 @@ public class MainFrame {
 		
 		btnDanishPlannerUi = new JButton("D.C. Planner UI");
 		btnDanishPlannerUi.addActionListener(controller);
-		btnDanishPlannerUi.setBounds(29, 275, 124, 37);
+		btnDanishPlannerUi.setBounds(28, 242, 124, 37);
 		frmDanishCrownProject.getContentPane().add(btnDanishPlannerUi);
 		
-		btnTruckerUi = new JButton("Trucker UI");
+		btnTruckerUi = new JButton("Trucker Sign In");
 		btnTruckerUi.addActionListener(controller);
-		btnTruckerUi.setBounds(199, 275, 101, 37);
+		btnTruckerUi.setBounds(200, 280, 130, 37);
 		frmDanishCrownProject.getContentPane().add(btnTruckerUi);
 		
 		btnWarehouseUi = new JButton("Warehouse UI");
 		btnWarehouseUi.addActionListener(controller);
-		btnWarehouseUi.setBounds(370, 275, 110, 37);
+		btnWarehouseUi.setBounds(373, 242, 110, 37);
 		frmDanishCrownProject.getContentPane().add(btnWarehouseUi);
+		
+		btnSignOut = new JButton("Trucker Sign Out");
+		btnSignOut.addActionListener(controller);
+		btnSignOut.setBounds(200, 209, 130, 37);
+		frmDanishCrownProject.getContentPane().add(btnSignOut);
 		
 		lblDclogo = new JLabel("DClogo");
 		lblDclogo.setIcon(new ImageIcon(MainFrame.class.getResource("/resources/DCLogo_2.jpg")));
@@ -158,6 +165,11 @@ public class MainFrame {
 			{
 				dcPlannerUI=new DCPlannerUI();
 				dcPlannerUI.setVisible(true);
+			}
+			if(e.getSource()==btnSignOut)
+			{
+				truckerSignOutFrame =new TruckerSignOutFrame();
+				truckerSignOutFrame.setVisible(true);
 			}
 		}
 		

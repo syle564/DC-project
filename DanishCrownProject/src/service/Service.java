@@ -2,7 +2,9 @@ package service;
 
 
 import model.Order;
+import dao.DAO;
 import dao.DataBase;
+import dao.JPADataBase;
 import model.Type;
 import model.Suborder;
 import model.Trailer;
@@ -21,7 +23,8 @@ import java.util.Date;
 public class Service {
 
 	private static Service instance;
-	
+
+	private DAO dao=JPADataBase.getInstance(); 
 	
 	private Service()
 	{
@@ -59,57 +62,57 @@ public class Service {
 	public Order createOrder(int orderId, int totalWeight, int margin, model.Type lType)
 	{
 		Order order=new Order(orderId,totalWeight,margin,lType);
-		DataBase.getInstance().addOrder(order);
+		dao.addOrder(order);
 		return order;
 	}
 	
 	//returns a sorted list of the orders
 	public ArrayList<Order> getAllOrders()
 	{
-		return quicSort(DataBase.getInstance().getOrder(), new OrderIDComparator());
+		return quicSort(dao.getOrder(), new OrderIDComparator());
 	}
 	 //Modify Order
 	public void updateOrder(Order order,int totalWeight,int margin,Type lType){
 		
 		
-		DataBase.getInstance().updateOrder(order,totalWeight,margin,lType);
+		dao.updateOrder(order,totalWeight,margin,lType);
 	}
 
 	//Remove Order
 	public void removeOrder(Order order)
 	{
-		DataBase.getInstance().removeOrder(order);
+		dao.removeOrder(order);
 	}
 	//Create Trailer
 	public  Trailer createTrailer(String truckID, String company,String driver,String driverPhNum,Type lType)
 	{
 		Trailer trailer=new Trailer(truckID, company, driver, driverPhNum, lType);
-		DataBase.getInstance().addTrailer(trailer);
+		dao.addTrailer(trailer);
 		return trailer;
 	}
 	//Remove trailer(not a use case)
 	public void removeTrailer(Trailer trailer)
 	{
-		DataBase.getInstance().removeTrailer(trailer);
+		dao.removeTrailer(trailer);
 	}
 	
 	//Maintain trailer information
 	public void updateTrailer(Trailer trailer,String truckID,String company,String driver,String driverPhNum,Type lType )
 	{
-		DataBase.getInstance().updateTrailer(trailer, truckID, company, driver, driverPhNum, lType);	
+		dao.updateTrailer(trailer, truckID, company, driver, driverPhNum, lType);	
 	}
 	
 	//not a use case
 	public LoadingDock createLoadingDock(int dockID,Type lType,Status lStatus)
 	{
 		LoadingDock loadingDock=new LoadingDock(dockID, lType, lStatus);
-		DataBase.getInstance().addLoadingDock(loadingDock);
+		dao.addLoadingDock(loadingDock);
 		return loadingDock;
 	}
 	//not a use case
 	public void removeLoadingDock(LoadingDock loadingDock)
 	{
-		DataBase.getInstance().removeLoadingDock(loadingDock);
+		dao.removeLoadingDock(loadingDock);
 	}
 	
 	/**
@@ -135,7 +138,7 @@ public class Service {
 	//not a use case
 	public void beginLoad(Load load,LoadingDock loadingDock)
 	{
-		DataBase.getInstance().updateLoad(load, load.getEstStartTime(), load.getEstEndTime(), loadingDock, load.isCompleted(), DU.createDate(), null);
+		dao.updateLoad(load, load.getEstStartTime(), load.getEstEndTime(), loadingDock, load.isCompleted(), DU.createDate(), null);
 		
 	}
 
@@ -146,8 +149,8 @@ public class Service {
 	//Load approved
     public boolean completeLoad(Load load, LoadingDock loadingDock,String trailerID)
     {
-    	DataBase.getInstance().updateLoad(load, load.getEstStartTime(), load.getEstEndTime(), loadingDock, true, load.getActualBegTime(),DU.createDate());
-    	ArrayList<Trailer> trailers=DataBase.getInstance().getAllTrailers();
+    	dao.updateLoad(load, load.getEstStartTime(), load.getEstEndTime(), loadingDock, true, load.getActualBegTime(),DU.createDate());
+    	ArrayList<Trailer> trailers=dao.getAllTrailers();
     	 Trailer foundT = null;
     	 for(Trailer t : trailers){
     			if(t.getTrailerID().equals(trailerID))
@@ -202,8 +205,8 @@ public class Service {
 		if(weightIn>14000 || weightIn<0)
 		return false;
 		
-	 ArrayList<Trailer> trailers=DataBase.getInstance().getAllTrailers();
-	 ArrayList<LoadingDock> loadingDocks=DataBase.getInstance().getAllLoadingDocks();
+	 ArrayList<Trailer> trailers=dao.getAllTrailers();
+	 ArrayList<LoadingDock> loadingDocks=dao.getAllLoadingDocks();
 	 Trailer foundT = null;
 	 for(Trailer t : trailers){
 		if(t.getTrailerID().equals(trailerID)){
@@ -290,6 +293,37 @@ public class Service {
 			return false;
 		}
 	}
+	
+	
+	public boolean signOut(String trailerID,int weightOut)
+	{
+		ArrayList<Trailer> trailers=dao.getAllTrailers();
+		 
+		Trailer foundT = null;
+		 for(Trailer t : trailers){
+			if(t.getTrailerID().equals(trailerID))
+				foundT = t;
+		 }
+		 
+		 if(foundT!=null)
+		 {
+		 Order foundOrder=null; 
+		
+		 Suborder suborder=foundT.getlSuborders().get(0);
+		 for(Order o:dao.getOrder())
+			 if(o.getlSuborder().contains(suborder))
+				 foundOrder=o;
+		 
+		  if(foundOrder!=null)
+		 {
+			return weightOut(foundT, weightOut, foundOrder.getMargin()); 
+		 }
+		  else
+		  return false;}
+		 
+		else return false;
+		
+	}
 	//Get loading dock status
 	public Status DockStatus(LoadingDock loadingDock)
 	{
@@ -352,20 +386,19 @@ public class Service {
     public ArrayList<Trailer> getAvailbleTrailers()
     {ArrayList<Trailer> availableTrailers = new ArrayList<Trailer>();
     	
-     for(Trailer t: DataBase.getInstance().getAllTrailers())
+     for(Trailer t: dao.getAllTrailers())
      {if(!t.isDeparted())
     	 availableTrailers.add(t);
     	 
      }
      
-     System.out.println(quicSort(availableTrailers, new TrailerIDComparator()));
      return quicSort(availableTrailers, new TrailerIDComparator());
     }
 
     //Get list of loading times(from specific loading dock's loads)
     public ArrayList<Load> getLoadsFrom(LoadingDock lDock)
      {ArrayList<Load> loads=new ArrayList<Load>();
-      loads= lDock.getlLoad();
+      loads= (ArrayList<Load>) lDock.getlLoad();
       return quicSort(loads, new LoadTimeComparator());
     	
      }
@@ -373,7 +406,7 @@ public class Service {
     public ArrayList<LoadingDock> getAvailableDocks()
     {
     	ArrayList<LoadingDock> loadingDocks=new ArrayList<LoadingDock>();
-    	for(LoadingDock l:DataBase.getInstance().getAllLoadingDocks())
+    	for(LoadingDock l:dao.getAllLoadingDocks())
     	{
     		if(l.getlStatus()!=Status.CLOSED)
     			loadingDocks.add(l);

@@ -3,13 +3,29 @@ package model;
 
 import java.util.Date;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+@Entity
 public class Load {
 
+	@Id
+	@GeneratedValue
+	private int id;
+	
+	@Temporal(TemporalType.DATE)
 	private Date actualBegTime;
+	@Temporal(TemporalType.DATE)
 	private Date actualEndTime;
+	@Temporal(TemporalType.DATE)
 	private Date estStartTime;
+	@Temporal(TemporalType.DATE)
 	private Date estEndTime;
 	private boolean completed;
+	@OneToOne
 	private Suborder lSuborder;
 	
 	

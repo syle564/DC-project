@@ -2,17 +2,34 @@ package model;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
+@Entity
 public class Trailer implements Comparable<String> {
+@Id
 private String trailerID;
 private String company;
 private int weighIn;
 private String driver;
 private String driverPhNum;
+@Temporal(TemporalType.DATE)
 private Date arrivalTime;
 private int restTime;
 private boolean departed;
+@Enumerated(EnumType.STRING)
+private Type lType;
+@OneToMany
+@JoinColumn
+private List<Suborder> lSuborders;
 
 public boolean isDeparted() {
 	return departed;
@@ -21,11 +38,6 @@ public boolean isDeparted() {
 public void setDeparted(boolean departed) {
 	this.departed = departed;
 }
-
-
-
-private Type lType;
-private ArrayList<Suborder> lSuborders;
 
 
 
@@ -115,7 +127,7 @@ public void setlType(Type lType) {
 }
 
 
-public ArrayList<Suborder> getlSuborders() {
+public List<Suborder> getlSuborders() {
 	return lSuborders;
 }
 

@@ -1,12 +1,28 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+@Entity
 public class LoadingDock {
+	
+	@Id
+	@GeneratedValue
 	private int dockID;
+	@Enumerated(EnumType.STRING)
 	private Type lType;
+	@Enumerated(EnumType.STRING)
 	private Status lStatus;
-	private ArrayList<Load> lLoad = new ArrayList<Load>();
+	@OneToMany
+	@JoinColumn
+	private List<Load> lLoad = new ArrayList<Load>();
 	
 	public LoadingDock() {
 		
@@ -44,7 +60,7 @@ public class LoadingDock {
 		this.lStatus = lStatus;
 	}
 	
-	public ArrayList<Load> getlLoad() {
+	public List<Load> getlLoad() {
 		return lLoad;
 	}
 

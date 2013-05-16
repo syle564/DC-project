@@ -1,14 +1,32 @@
 package model;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import javax.jws.Oneway;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+
+@Entity
 public class Order {
+	@Id
+	@GeneratedValue
 	private int OrderID;
 	private int totalWeight;
 	private int margin;
+	
+	@Enumerated(EnumType.STRING)
 	private Type lType;
 	
-	private ArrayList <Suborder> lSuborder = new ArrayList<Suborder>(); 
+	@OneToMany(cascade=CascadeType.REMOVE)
+	private List <Suborder> lSuborder = new ArrayList<Suborder>(); 
 	
 	
 	public Order() {
@@ -52,7 +70,7 @@ public class Order {
 		this.lType = lType;
 	}
 	
-	public ArrayList<Suborder> getlSuborder() {
+	public List<Suborder> getlSuborder() {
 		return lSuborder;
 	}
 

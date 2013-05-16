@@ -2,11 +2,24 @@ package model;
 
 import java.util.Date;
 
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.OneToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+@Entity
 public class Suborder {
+	@Id 
+	@GeneratedValue
+	private int id;
 	private int loadingTime;
 	private int weight;
+	@Temporal(TemporalType.DATE)
 	private Date loadingDate;
+	@OneToOne
 	private Trailer lTrailer;
+	@OneToOne
 	private Load lLoad;
 	
 	public Suborder(int loadingTime, int weight, Date loadingDate,Trailer trailer) {

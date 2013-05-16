@@ -3,6 +3,7 @@ package gui;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
+import javax.print.attribute.standard.JobName;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -29,22 +30,14 @@ public class TruckerUIFrame extends JFrame {
 	private JLabel lblRestTime;
 	private Controller controller;
 	private JLabel lblFound;
+	private JTextField txtWeightIn;
+	private JLabel lblWeghtIn;
+
 
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					TruckerUIFrame frame = new TruckerUIFrame();
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+	
 
 	/**
 	 * Create the frame.
@@ -55,7 +48,7 @@ public class TruckerUIFrame extends JFrame {
 		setIconImage(Toolkit.getDefaultToolkit().getImage(TruckerUIFrame.class.getResource("/resources/DCLogo.jpeg")));
 		setTitle("TruckerUI");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 240, 300);
+		setBounds(100, 100, 345, 300);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -100,6 +93,16 @@ public class TruckerUIFrame extends JFrame {
 		
 		lblFound.setBounds(10, 243, 88, 14);
 		contentPane.add(lblFound);
+		
+		txtWeightIn = new JTextField();
+		txtWeightIn.setText("10000");
+		txtWeightIn.setBounds(182, 161, 86, 20);
+		contentPane.add(txtWeightIn);
+		txtWeightIn.setColumns(10);
+		
+		lblWeghtIn = new JLabel("Weght In");
+		lblWeghtIn.setBounds(182, 138, 46, 14);
+		contentPane.add(lblWeghtIn);
 	}
 	
 	private class Controller implements ActionListener
@@ -114,8 +117,10 @@ public class TruckerUIFrame extends JFrame {
 					String phone,trailerId;
 					int restTime=Integer.parseInt(txtResttime.getText());
 					phone=txtPhone.getText();
+					int weightIN=Integer.parseInt(txtWeightIn.getText());
 					trailerId=txtTrailerid.getText();
-					if(Service.getInstance().registerIn(trailerId, 2222, restTime,phone))
+					
+					if(Service.getInstance().registerIn(trailerId, weightIN, restTime,phone))
 					{   lblFound.setForeground(Color.GREEN);
 						lblFound.setText("Success");
 						txtTrailerid.setText("");
