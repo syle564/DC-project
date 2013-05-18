@@ -123,11 +123,12 @@ public class WareHousePanel extends JPanel {
 			}
 			
 			if(e.getSource()==btnLoadApproved)
-			{Date estStartDate=(Date)table.getValueAt(table.getSelectedRow(), 0);
-			Date estEndDate=(Date)table.getValueAt(table.getSelectedRow(), 1);
-			Date actualStartTime=(Date)table.getValueAt(table.getSelectedRow(), 2);
-			Date actualEndTime=(Date)table.getValueAt(table.getSelectedRow(), 3);
-			boolean isCompleted=(boolean)table.getValueAt(table.getSelectedRow(), 4);
+			{
+//				Date estStartDate=(Date)table.getValueAt(table.getSelectedRow(), 0);
+//			Date estEndDate=(Date)table.getValueAt(table.getSelectedRow(), 1);
+//			Date actualStartTime=(Date)table.getValueAt(table.getSelectedRow(), 2);
+//			Date actualEndTime=(Date)table.getValueAt(table.getSelectedRow(), 3);
+//			boolean isCompleted=(boolean)table.getValueAt(table.getSelectedRow(), 4);
 			String trailerID=(String)table.getValueAt(table.getSelectedRow(), 5);
 			Load load=(Load)table.getValueAt(table.getSelectedRow(), 6);
 			if(service.completeLoad(load, (LoadingDock)cmbSelectDock.getSelectedItem(), trailerID))
