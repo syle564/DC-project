@@ -227,20 +227,19 @@ public class Service {
 	
 	 if(foundT!=null)
 	 {
+		 LoadingDock appropriateDock=null;
+		 for (LoadingDock lD : loadingDocks)
+		 {
+			 Date plannedDate1 = DU.createDate(1);
+			 if(findLastLoad(lD).compareTo(plannedDate1)<0)
+					appropriateDock=lD;
+		 }
+		 
+		 
 	for(Suborder s : foundT.getlSuborders()){
 		//finding the shortest queue 
-	
-		Date plannedDate = DU.createDate(1);
-		LoadingDock appropriateDock = null;
-		for (LoadingDock lD : loadingDocks) {
-			if(findLastLoad(lD).compareTo(plannedDate)>0)
-				{System.out.println(lD);
-				plannedDate= findLastLoad(lD);
-				}
-			if(findLastLoad(lD).compareTo(plannedDate)<0)
-				appropriateDock=lD;
-			
-		}
+		
+		Date plannedDate=findLastLoad(appropriateDock); 
 		
 		if(appropriateDock==null)
 		{
