@@ -61,8 +61,8 @@ Trailer t2=service.createTrailer("7", "Cock", "Douche", "23123", Type.CHRISTMAS_
 //	Trailer t4=service.createTrailer("4", "Cock", "Douche", "23123", Type.CHRISTMAS_TREE);
 //	Suborder s2=service.createSuborder(25, 200, DU.createDate(), o1, t2);
 //
-service.updateTrailer(t2, "7","dsds", "SDs", "sdsd", Type.BOX);
-System.out.println(service.getAvailbleTrailers());
+//service.updateTrailer(t2, "7","dsds", "SDs", "sdsd", Type.BOX);
+
 
 //	
 	

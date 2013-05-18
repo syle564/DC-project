@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -27,7 +28,7 @@ private int restTime;
 private boolean departed;
 @Enumerated(EnumType.STRING)
 private Type lType;
-@OneToMany
+@OneToMany(cascade=CascadeType.PERSIST)
 @JoinColumn
 private List<Suborder> lSuborders;
 

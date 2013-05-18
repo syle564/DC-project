@@ -7,9 +7,11 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 @Entity
+@Table(name="\"LOAD\"")
 public class Load {
 
 	@Id
@@ -36,25 +38,16 @@ public class Load {
 	}
 
 
-	public Load(Date estStartTime, Date estEndTime,Suborder suborder,LoadingDock loadingDock) {
+	public Load(Date estStartTime, Date estEndTime,Suborder suborder) {
 		super();
 		this.estStartTime = estStartTime;
 		this.estEndTime = estEndTime;
 		this.lSuborder=suborder;
-		loadingDock.addLoad(this);
+		
 	}
 
 	
 
-	public Load(Date actualBegTime, Date acttualEndTime, Date estStartTime,
-			Date estEndTime, boolean completed) {
-		super();
-		this.actualBegTime = actualBegTime;
-		this.actualEndTime = acttualEndTime;
-		this.estStartTime = estStartTime;
-		this.estEndTime = estEndTime;
-		this.completed = completed;
-	}
 
 
 	public Date getActualBegTime() {

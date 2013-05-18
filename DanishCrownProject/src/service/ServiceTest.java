@@ -41,14 +41,14 @@ public class ServiceTest {
 	}
 	/**
 	 * @author tombernold
-	 *Fills in trailer ID, fills in rest time, fills in phone number
+	 *Fills in trailer ID, fills in weighIN,fills in rest time, fills in phone number
 	 */
 	@Test
 	public void testRegisterIn() {
 		Service.getInstance().registerIn("1", 2, 30, "3456");
-		for(Suborder s : t1.getlSuborders())
-		assertFalse(s.getlLoad()== null);
-	
+		for(Suborder s : t1.getlSuborders()){
+		assertFalse(s.getlLoad()==null);
+		}
 		
 	}
 	/**
@@ -247,45 +247,45 @@ public class ServiceTest {
 	@Test
 	public void testCreateLoad_Test_1(){
 		
-		assertTrue(Service.getInstance().createLoad(now, now, s1, loadingD)==null);
+		assertFalse(Service.getInstance().createLoad(now, now, s1, loadingD));
 	}
 	@Test
 	public void testCreateLoad_Test_2(){
-		assertFalse(Service.getInstance().createLoad(now, after4hours, s1, loadingD)==null);
+		assertFalse(Service.getInstance().createLoad(now, after4hours, s1, loadingD));
 	}
 	@Test
 	public void testCreateLoad_Test_3(){
-		assertFalse(Service.getInstance().createLoad(now, inahour, s1, loadingD)==null);
+		assertFalse(Service.getInstance().createLoad(now, inahour, s1, loadingD));
 	}
 	@Test
 	public void testCreateLoad_Test_4(){
 		
-		assertTrue(Service.getInstance().createLoad(now, now, s1, loadingDOcc)==null);
+		assertTrue(Service.getInstance().createLoad(now, now, s1, loadingDOcc));
 	}
 	@Test
 	public void testCreateLoad_Test_5(){
-		assertFalse(Service.getInstance().createLoad(now, after4hours, s1, loadingDOcc)==null);
+		assertFalse(Service.getInstance().createLoad(now, after4hours, s1, loadingDOcc));
 	}
 	@Test
 	public void testCreateLoad_Test_6()
 	{	
-		assertFalse(Service.getInstance().createLoad(now, inahour, s1, loadingDOcc)==null);
+		assertFalse(Service.getInstance().createLoad(now, inahour, s1, loadingDOcc));
 		}
 	
 		@Test
 		public void testCreateLoad_Test_7(){
 			
-			assertTrue(Service.getInstance().createLoad(now, now, s1, loadingDCl)==null);}
+			assertTrue(Service.getInstance().createLoad(now, now, s1, loadingDCl));}
 		
 
 		@Test
 		public void testCreateLoad_Test_8(){
-			assertTrue(Service.getInstance().createLoad(now, after4hours, s1, loadingDCl)==null);}
+			assertTrue(Service.getInstance().createLoad(now, after4hours, s1, loadingDCl));}
 		
 		
 		@Test
 		public void testCreateLoad_Test_9(){
-			assertTrue(Service.getInstance().createLoad(now, inahour, s1, loadingDCl)==null);
+			assertTrue(Service.getInstance().createLoad(now, inahour, s1, loadingDCl));
 			}
 	@Test
 	public void testWeightOut_Test_1(){

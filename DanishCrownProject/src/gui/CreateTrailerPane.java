@@ -143,7 +143,7 @@ public class CreateTrailerPane extends JPanel {
 		{
 			trailerModel.addElement(t);
 		}
-		System.out.println( Service.getInstance().getAvailbleTrailers());
+		
 	}
 	
 	
@@ -156,7 +156,7 @@ public class CreateTrailerPane extends JPanel {
 			if(e.getSource()==btnSave)
 			{
 				if(listTrailer.getSelectedIndex()!=-1)
-				{Service.getInstance().updateTrailer(listTrailer.getSelectedValue(), 
+				{Service.getInstance().updateTrailer(listTrailer.getSelectedValue(),null, 0,false,0,
 				txtTrailerid.getText(), txtCompany.getText(), txtDriver.getText(), "", (Type)cmbxCargo.getSelectedItem());}
 				else{
 				Service.getInstance().createTrailer(txtTrailerid.getText(), 

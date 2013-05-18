@@ -19,6 +19,7 @@ import javax.swing.JList;
 import service.DU;
 import service.Service;
 
+import model.Order;
 import model.Suborder;
 import model.Trailer;
 
@@ -42,20 +43,21 @@ public class SuborderDialog extends JDialog {
 	private JButton okButton;
 	private JButton cancelButton;
 	private Controller controller;
+	private Order order;
 
 
 
 	/**
 	 * Create the dialog.
 	 */
-	public SuborderDialog(Suborder suborder, JFrame owner, ModalityType modality) {
+	public SuborderDialog(Order order,Suborder suborder, JFrame owner, ModalityType modality) {
 		
 		
 		
 		super(owner, modality);
 		this.suborder=suborder;
 		controller= new Controller();
-		
+		this.order=order;
 		
 		setIconImage(Toolkit.getDefaultToolkit().getImage(SuborderDialog.class.getResource("/resources/DCLogo.jpeg")));
 		setTitle("Suborder Dialog");
@@ -165,8 +167,8 @@ public class SuborderDialog extends JDialog {
 			{
 				if(lstTrailers.getSelectedIndex()!=-1)
 				{
-				suborder= new Suborder(Integer.parseInt(txtLoadingtime.getText()),Integer.parseInt(txtLoadingweight.getText()),
-						DU.createDate(txtLoadingdate.getText()),lstTrailers.getSelectedValue());
+				suborder= Service.getInstance().createSuborder(Integer.parseInt(txtLoadingtime.getText()),Integer.parseInt(txtLoadingweight.getText()),
+						DU.createDate(txtLoadingdate.getText()),order,lstTrailers.getSelectedValue());
 				getThis().setVisible(false);
 				}
 			}
@@ -174,7 +176,7 @@ public class SuborderDialog extends JDialog {
 			
 			if(e.getSource()==cancelButton)
 			{
-				getThis().setVisible(false);
+				getThis().dispose();
 			}
 		}
 		

@@ -208,7 +208,7 @@ public class HandleOrderPane extends JPanel {
 		        if(e.getSource()==btnAddsub)
 		        {
 		        	
-		        	SuborderDialog subDioalog=new SuborderDialog(lstSub.getSelectedValue(),getFrame(), ModalityType.DOCUMENT_MODAL);
+		        	SuborderDialog subDioalog=new SuborderDialog(lstOrders.getSelectedValue(),lstSub.getSelectedValue(),getFrame(), ModalityType.DOCUMENT_MODAL);
 		        	subDioalog.setVisible(true);
 		        	if(subDioalog.getSuborder()!=null)
 		        	lstOrders.getSelectedValue().addSuborder(subDioalog.getSuborder());
@@ -248,12 +248,12 @@ public class HandleOrderPane extends JPanel {
 		        	{
 		        		Service.getInstance().updateOrder(lstOrders.getSelectedValue(),
 			        			Integer.parseInt(txtTotalweight.getText()) , Integer.parseInt(txtMargin.getText())
-			        			, cmbxCargo.getPrototypeDisplayValue());
+			        			, (Type) cmbxCargo.getSelectedItem());
 		        	}
 		        	else
 		        	Service.getInstance().createOrder(Integer.parseInt(txtOrderid.getText()),
 		        			Integer.parseInt(txtTotalweight.getText()) , Integer.parseInt(txtMargin.getText())
-		        			, cmbxCargo.getPrototypeDisplayValue());
+		        			,(Type) cmbxCargo.getSelectedItem());
 		        	fillOrders();
 		        }
 		        

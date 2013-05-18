@@ -65,7 +65,7 @@ public class JPADataBase implements DAO
 	@Override
 	public void addTrailer(Trailer trailer) {
 		em.getTransaction().begin();
-		em.persist(trailer);
+		em.merge(trailer);
 		em.getTransaction().commit();
 		
 	}
@@ -79,11 +79,15 @@ public class JPADataBase implements DAO
 	}
 
 	@Override
-	public void updateTrailer(Trailer trailer, String truckID, String company,
-			String driver, String driverPhNum, Type lType) {
-		
+	public void updateTrailer(Trailer trailer, Date arrivalTime, int restTime,
+			boolean departed,int weighIn, String truckID, String company, String driver,
+			String driverPhNum, Type lType) {
 		em.getTransaction().begin();
 		Trailer t = em.find(Trailer.class,trailer.getTrailerID());
+		t.setArrivalTime(arrivalTime);
+		t.setDeparted(departed);
+		t.setRestTime(restTime);
+		t.setWeighIn(weighIn);
 		t.setTrailerID(truckID);
 		t.setCompany(company);
 		t.setDriver(driver);
@@ -92,76 +96,137 @@ public class JPADataBase implements DAO
 		em.getTransaction().commit();
 	}
 
+
 	@Override
 	public ArrayList<Order> getOrder() {
-		// TODO Auto-generated method stub
-		return null;
+		Query query= em.createQuery("Select t from Order t", Order.class);
+		List<Order> orders=query.getResultList();
+		
+		ArrayList<Order> arrOrders=new ArrayList<Order>();
+		for(Order o: orders)
+		{arrOrders.add(o);
+			
+		}
+		return arrOrders;
+		
 	}
 
 	@Override
 	public void addOrder(Order order) {
-		// TODO Auto-generated method stub
-		
+		em.getTransaction().begin();
+		em.merge(order);
+		em.getTransaction().commit();
 	}
 
 	@Override
 	public void removeOrder(Order order) {
-		// TODO Auto-generated method stub
 		
+		em.getTransaction().begin();
+		em.remove(order);
+		em.getTransaction().commit();
 	}
 
 	@Override
 	public void updateOrder(Order order, int totalWeight, int margin, Type lType) {
-		// TODO Auto-generated method stub
 		
+		
+		
+		em.getTransaction().begin();
+		Order o = em.find(Order.class,order.getOrderID());
+		o.setMargin(margin);
+		o.setTotalWeight(totalWeight);
+		o.setlType(lType);
+		em.getTransaction().commit(); 
 	}
 
 	@Override
 	public ArrayList<LoadingDock> getAllLoadingDocks() {
-		// TODO Auto-generated method stub
-		return null;
+		
+		Query query= em.createQuery("Select t from LoadingDock t", LoadingDock.class);
+		List<LoadingDock> loadingDocks=query.getResultList();
+		
+		ArrayList<LoadingDock> arrDocks=new ArrayList<LoadingDock>();
+		for(LoadingDock d:loadingDocks )
+		{arrDocks.add(d);
+			
+		}
+		return arrDocks;
 	}
 
 	@Override
 	public void addLoadingDock(LoadingDock loadingDock) {
-		// TODO Auto-generated method stub
-		
+		em.getTransaction().begin();
+		em.merge(loadingDock);
+		em.getTransaction().commit();
 	}
 
 	@Override
 	public void removeLoadingDock(LoadingDock loadingDock) {
-		// TODO Auto-generated method stub
 		
+		em.getTransaction().begin();
+		em.remove(loadingDock);
+		em.getTransaction().commit();
 	}
 
 	@Override
 	public void updateLoadingDock(LoadingDock loadingDock, int dockID,
 			Type lType, Status lStatus) {
-		// TODO Auto-generated method stub
 		
+		em.getTransaction().begin();
+		LoadingDock d= em.find(LoadingDock.class,loadingDock.getDockID());
+		d.setlType(lType);
+		d.setlStatus(lStatus);
+		em.getTransaction().commit(); 
 	}
 
 	@Override
 	public void updateLoad(Load load, Date estStartTime, Date estEndTime,
 			LoadingDock loadingDock, boolean completed, Date actualBegTime,
 			Date actualEndTime) {
-		// TODO Auto-generated method stub
+		
+		em.getTransaction().begin();
+		LoadingDock d= em.find(LoadingDock.class,loadingDock.getDockID());
+		Load loadPlaceHolder = null;
+		for(Load l:loadingDock.getlLoad())
+		{
+			if(l.getEstStartTime().equals(load.getEstStartTime()))
+				loadPlaceHolder=l;
+		}
+		loadPlaceHolder.setEstStartTime(estStartTime);
+		loadPlaceHolder.setEstEndTime(estEndTime);
+		loadPlaceHolder.setActualBegTime(actualBegTime);
+		loadPlaceHolder.setActualEndTime(actualEndTime);
+		loadPlaceHolder.setCompleted(completed);
+		em.getTransaction().commit(); 
 		
 	}
 
 	@Override
 	public void addLoad(Date estStartTime, Date estEndTime, Suborder suborder,
 			LoadingDock loadingDock) {
-		// TODO Auto-generated method stub
 		
+		em.getTransaction().begin();
+		LoadingDock d= em.find(LoadingDock.class,loadingDock.getDockID());
+		Load l =new Load(estStartTime, estEndTime, suborder);
+		loadingDock.addLoad(l);
+		suborder.setlLoad(l);
+		em.getTransaction().commit(); 
 	}
 
 	@Override
 	public void addSuborder(int loadingTime, int weight, Date loadingDate,
 			Order order, Trailer lTrailer) {
-		// TODO Auto-generated method stub
-		
+		em.getTransaction().begin();
+		Suborder sub= new Suborder(loadingTime,weight,loadingDate,lTrailer);
+		Order or=em.find(Order.class, order.getOrderID());
+		or.addSuborder(sub);
+		Trailer t=em.find(Trailer.class,lTrailer.getTrailerID());
+		t.addlSuborders(sub);
+		em.getTransaction().commit();
 	}
 
+
+
+	
 	
 }

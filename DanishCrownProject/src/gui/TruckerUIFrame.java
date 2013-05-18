@@ -17,6 +17,8 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.Color;
+import java.awt.Window.Type;
+import java.awt.Dialog.ModalExclusionType;
 
 public class TruckerUIFrame extends JFrame {
 
@@ -44,6 +46,8 @@ public class TruckerUIFrame extends JFrame {
 	 */
 	public TruckerUIFrame() {
 		controller=new Controller();
+		
+		
 		
 		setIconImage(Toolkit.getDefaultToolkit().getImage(TruckerUIFrame.class.getResource("/resources/DCLogo.jpeg")));
 		setTitle("TruckerUI");

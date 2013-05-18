@@ -2,12 +2,16 @@ package model;
 
 import java.util.Date;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
+import org.eclipse.persistence.annotations.CascadeOnDelete;
 @Entity
 public class Suborder {
 	@Id 
@@ -17,7 +21,7 @@ public class Suborder {
 	private int weight;
 	@Temporal(TemporalType.DATE)
 	private Date loadingDate;
-	@OneToOne
+	@ManyToOne
 	private Trailer lTrailer;
 	@OneToOne
 	private Load lLoad;

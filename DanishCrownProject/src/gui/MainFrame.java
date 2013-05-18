@@ -56,7 +56,8 @@ public class MainFrame {
 	public static void main(String[] args) {
 		
 		Service service=Service.getInstance();
-		LoadingDock loadingD=service.createLoadingDock(1, Type.BOX, Status.OPEN);
+	LoadingDock loadingD=service.createLoadingDock(1, Type.BOX, Status.OPEN);
+	LoadingDock loadingD2=service.createLoadingDock(2, Type.BOX, Status.OPEN);
 		Order o1=service.createOrder(1, 2000, 10, Type.BOX);
 		Trailer t1=service.createTrailer("1", "Cock", "Douche", "23123", Type.BOX);
 		Suborder s1=service.createSuborder(30, 200, DU.createDate(), o1, t1);
@@ -104,11 +105,12 @@ public class MainFrame {
 	private void initialize() {
 		controller=new Controller();
 		
+		
 		frmDanishCrownProject = new JFrame();
 		frmDanishCrownProject.setIconImage(Toolkit.getDefaultToolkit().getImage(MainFrame.class.getResource("/resources/DCLogo.jpeg")));
 		frmDanishCrownProject.setTitle("Danish Crown Project");
 		frmDanishCrownProject.setBounds(100, 100, 565, 366);
-		frmDanishCrownProject.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frmDanishCrownProject.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frmDanishCrownProject.getContentPane().setLayout(null);
 		
 		btnDanishPlannerUi = new JButton("D.C. Planner UI");

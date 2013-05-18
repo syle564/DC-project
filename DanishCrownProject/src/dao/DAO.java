@@ -3,6 +3,7 @@ package dao;
 import java.util.ArrayList;
 import java.util.Date;
 
+
 import model.Load;
 import model.LoadingDock;
 import model.Order;
@@ -19,7 +20,7 @@ public interface DAO {
 	public ArrayList<Trailer> getAllTrailers();
 	public void addTrailer(Trailer Trailer);
 	public void removeTrailer(Trailer Trailer);
-	public void updateTrailer(Trailer trailer,String truckID, String company,String driver,String driverPhNum,Type lType);
+	public void updateTrailer(Trailer trailer,Date arrivalTime,int restTime,boolean departed ,int weighIn,String truckID, String company,String driver,String driverPhNum,Type lType);
 	
 	
 	public ArrayList<Order> getOrder();

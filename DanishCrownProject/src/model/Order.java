@@ -13,19 +13,21 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
+
 
 @Entity
+@Table(name="\"ORDER\"")
 public class Order {
 	@Id
 	@GeneratedValue
-	private int OrderID;
+	private int orderID;
 	private int totalWeight;
 	private int margin;
-	
 	@Enumerated(EnumType.STRING)
 	private Type lType;
-	
-	@OneToMany(cascade=CascadeType.REMOVE)
+	@OneToMany
 	private List <Suborder> lSuborder = new ArrayList<Suborder>(); 
 	
 	
@@ -33,17 +35,17 @@ public class Order {
 	}
 	public Order(int orderID, int totalWeight, int margin, Type lType) {
 		super();
-		OrderID = orderID;
+		this.orderID = orderID;
 		this.totalWeight = totalWeight;
 		this.margin = margin;
 		this.lType = lType;
 	}
 	public int getOrderID() {
-		return OrderID;
+		return orderID;
 	}
 
 	public void setOrderID(int orderID) {
-		OrderID = orderID;
+		this.orderID = orderID;
 	}
 
 	public int getTotalWeight() {
@@ -84,7 +86,7 @@ public class Order {
 	
 	@Override
 	public String toString() {
-		return "Order [OrderID=" + OrderID + ", totalWeight=" + totalWeight
+		return "Order [OrderID=" + orderID + ", totalWeight=" + totalWeight
 				+ ", margin=" + margin + "]";
 	}
 

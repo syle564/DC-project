@@ -97,9 +97,9 @@ public class Service {
 	}
 	
 	//Maintain trailer information
-	public void updateTrailer(Trailer trailer,String truckID,String company,String driver,String driverPhNum,Type lType )
+	public void updateTrailer(Trailer trailer,Date arrivalTime,int restTime,boolean departed,int weighIn ,String truckID,String company,String driver,String driverPhNum,Type lType )
 	{
-		dao.updateTrailer(trailer, truckID, company, driver, driverPhNum, lType);	
+		dao.updateTrailer(trailer,arrivalTime, restTime,departed ,weighIn, truckID, company, driver, driverPhNum, lType);	
 	}
 	
 	//not a use case
@@ -127,13 +127,14 @@ public class Service {
 	 * @return
 	 */
 	//included in the Register trailer
-	public Load createLoad(Date estStartTime, Date estEndTime,Suborder suborder,LoadingDock loadingDock)
+	public boolean createLoad(Date estStartTime, Date estEndTime,Suborder suborder,LoadingDock loadingDock)
 	{
-		if(estStartTime.compareTo(estEndTime)>=0 || estEndTime.getHours()==23L || estStartTime.getHours()<6L || loadingDock.getlStatus()==Status.CLOSED )
-			return null;
-		Load load=new Load(estStartTime, estEndTime,suborder,loadingDock);
-		suborder.setlLoad(load);
-		return load;
+//		if(estStartTime.compareTo(estEndTime)>=0 || estEndTime.getHours()==23L || estStartTime.getHours()<6L || loadingDock.getlStatus()==Status.CLOSED )
+//			return false;
+		
+		 dao.addLoad(estStartTime, estEndTime, suborder, loadingDock);
+		return true;
+		
 	}
 	//not a use case
 	public void beginLoad(Load load,LoadingDock loadingDock)
@@ -185,7 +186,7 @@ public class Service {
 	{
 		Suborder suborder=new Suborder(loadingTime, weight, loadingDate,lTrailer);
 		lTrailer.addlSuborders(suborder);
-		order.addSuborder(suborder);
+		dao.addSuborder(loadingTime, weight, loadingDate, order, lTrailer);
 		return suborder;
 	}
 	//not a use case
@@ -206,16 +207,20 @@ public class Service {
 		return false;
 		
 	 ArrayList<Trailer> trailers=dao.getAllTrailers();
-	 ArrayList<LoadingDock> loadingDocks=dao.getAllLoadingDocks();
+	 ArrayList<LoadingDock> loadingDocks=getAvailableDocks();
 	 Trailer foundT = null;
 	 for(Trailer t : trailers){
 		if(t.getTrailerID().equals(trailerID)){
 			foundT = t;
 		
+			
+			dao.updateTrailer(foundT,DU.createDate(),restTime,false,weightIn
+					,foundT.getTrailerID(), foundT.getCompany(),foundT.getDriver(),phoneNumb, foundT.getlType());
 	foundT.setRestTime(restTime);
 	foundT.setWeighIn(weightIn);
 	foundT.setDriverPhNum(phoneNumb);
 	foundT.setArrivalTime(DU.createDate());
+	
 		}
 	
 	 }
@@ -224,19 +229,26 @@ public class Service {
 	 {
 	for(Suborder s : foundT.getlSuborders()){
 		//finding the shortest queue 
-		Date plannedDate = DU.createDate();
+	
+		Date plannedDate = DU.createDate(1);
 		LoadingDock appropriateDock = null;
 		for (LoadingDock lD : loadingDocks) {
 			if(findLastLoad(lD).compareTo(plannedDate)>0)
-				{plannedDate= findLastLoad(lD);
-				appropriateDock=lD;
+				{System.out.println(lD);
+				plannedDate= findLastLoad(lD);
 				}
-			else{
-				appropriateDock=loadingDocks.get(0);
-			}
+			if(findLastLoad(lD).compareTo(plannedDate)<0)
+				appropriateDock=lD;
+			
 		}
 		
-		Load load=createLoad(DU.createDatePlusMinuts(plannedDate, 5), DU.createDatePlusMinuts(plannedDate, 5+s.getLoadingTime()), s,appropriateDock);
+		if(appropriateDock==null)
+		{
+			
+			appropriateDock=loadingDocks.get(0);
+		}
+	
+		createLoad(DU.createDatePlusMinuts(plannedDate, 5), DU.createDatePlusMinuts(plannedDate, 5+s.getLoadingTime()), s,appropriateDock);
 		//s.setlLoad(load);
 		//beginLoad(load);
 		//loadToDock(load, appropriateDock);
@@ -267,12 +279,22 @@ public class Service {
 	//not a use case
 	public Date findLastLoad(LoadingDock loadingDock)
 	{Date lastLoad = DU.createDate();
+	
 		for( Load l:loadingDock.getlLoad())
 		{
 			if(l.getEstEndTime().compareTo(lastLoad)>0)
-				lastLoad=l.getEstEndTime();
+			{	lastLoad=l.getEstEndTime();
+			
+			System.out.println("found");
+			}
 		}
-		return lastLoad;
+//	if(!loadingDock.getlLoad().isEmpty())
+//	{
+//			
+//		return loadingDock.getlLoad().get(loadingDock.getlLoad().size()-1).getEstEndTime();
+//		}
+		System.out.println(lastLoad);
+	return lastLoad;
 	}
 	//Register weight of the trailer before departure
 	public boolean weightOut(Trailer trailer,int weightOut,int margin)
@@ -312,14 +334,13 @@ public class Service {
 		 Suborder suborder=foundT.getlSuborders().get(0);
 		 for(Order o:dao.getOrder())
 			 if(o.getlSuborder().contains(suborder))
-				 foundOrder=o;
+			 foundOrder=o;
 		 
 		  if(foundOrder!=null)
-		 {
 			return weightOut(foundT, weightOut, foundOrder.getMargin()); 
-		 }
+		 
 		  else
-		  return false;}
+		   return false;}
 		 
 		else return false;
 		
@@ -398,7 +419,10 @@ public class Service {
     //Get list of loading times(from specific loading dock's loads)
     public ArrayList<Load> getLoadsFrom(LoadingDock lDock)
      {ArrayList<Load> loads=new ArrayList<Load>();
-      loads= (ArrayList<Load>) lDock.getlLoad();
+      for(Load l: lDock.getlLoad())
+      {
+    	  loads.add(l);
+      }
       return quicSort(loads, new LoadTimeComparator());
     	
      }

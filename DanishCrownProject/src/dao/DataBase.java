@@ -56,7 +56,11 @@ public class DataBase implements DAO {
 		this.trailers.remove(trailer);
 		
 	}
-	public void updateTrailer(Trailer trailer,String truckID, String company,String driver,String driverPhNum,Type lType){
+	
+	@Override
+	public void updateTrailer(Trailer trailer, Date arrivalTime, int restTime,
+			boolean departed,int weighIn, String truckID, String company, String driver,
+			String driverPhNum, Type lType) {
 		Trailer tr=null;
 		for(Trailer t:trailers){
 			if(t.equals(trailer)){
@@ -64,6 +68,10 @@ public class DataBase implements DAO {
 			}
 		}
 		if(tr!=null){
+			tr.setArrivalTime(arrivalTime);
+			tr.setRestTime(restTime);
+			tr.setDeparted(departed);
+			tr.setWeighIn(weighIn);
 			tr.setTrailerID(truckID);
 			tr.setCompany(company);
 			tr.setDriver(driver);
@@ -72,6 +80,7 @@ public class DataBase implements DAO {
 		}
 		
 	}
+	
 
 	@Override
 	public ArrayList<Order> getOrder() {
@@ -142,7 +151,8 @@ public class DataBase implements DAO {
 				ld=l;
 			}
 		}
-		ld.addLoad(new Load(estStartTime, estEndTime, suborder, loadingDock));
+		System.out.println("add load");
+		ld.addLoad(new Load(estStartTime, estEndTime, suborder));
 	}
 
 	@Override
@@ -162,7 +172,7 @@ public class DataBase implements DAO {
 			}
 		}
 		
-		System.out.println(loadd);
+	
 		loadd.setActualEndTime(actualEndTime);
 		loadd.setActualBegTime(actualBegTime);
 		loadd.setCompleted(completed);
@@ -191,6 +201,7 @@ public class DataBase implements DAO {
 		tr.addlSuborders(sub);
 		
 	}
+
 	
 		
 }
