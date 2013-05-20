@@ -27,7 +27,7 @@ public class Order {
 	private int margin;
 	@Enumerated(EnumType.STRING)
 	private Type lType;
-	@OneToMany
+	@OneToMany(cascade=CascadeType.PERSIST)
 	private List <Suborder> lSuborder = new ArrayList<Suborder>(); 
 	
 	

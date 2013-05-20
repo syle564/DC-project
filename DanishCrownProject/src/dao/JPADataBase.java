@@ -217,11 +217,10 @@ public class JPADataBase implements DAO
 	public void addSuborder(int loadingTime, int weight, Date loadingDate,
 			Order order, Trailer lTrailer) {
 		em.getTransaction().begin();
-		Suborder sub= new Suborder(loadingTime,weight,loadingDate,lTrailer);
-		Order or=em.find(Order.class, order.getOrderID());
-		or.addSuborder(sub);
 		Trailer t=em.find(Trailer.class,lTrailer.getTrailerID());
-		t.addlSuborders(sub);
+		Order or=em.find(Order.class, order.getOrderID());
+		Suborder sub= new Suborder(loadingTime,weight,loadingDate,t);
+		or.addSuborder(sub);
 		em.getTransaction().commit();
 	}
 

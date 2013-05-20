@@ -167,7 +167,7 @@ public class SuborderDialog extends JDialog {
 			{
 				if(lstTrailers.getSelectedIndex()!=-1)
 				{
-				suborder= Service.getInstance().createSuborder(Integer.parseInt(txtLoadingtime.getText()),Integer.parseInt(txtLoadingweight.getText()),
+				Service.getInstance().createSuborder(Integer.parseInt(txtLoadingtime.getText()),Integer.parseInt(txtLoadingweight.getText()),
 						DU.createDate(txtLoadingdate.getText()),order,lstTrailers.getSelectedValue());
 				getThis().setVisible(false);
 				}

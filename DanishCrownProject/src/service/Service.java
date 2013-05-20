@@ -20,12 +20,20 @@ import java.util.Date;
 
 
 
+/**
+ * @author Momo
+ *
+ */
 public class Service {
 
 	private static Service instance;
 
 	private DAO dao=JPADataBase.getInstance(); 
 	
+	/**
+	 * @author Momo
+	 *The constructor is private so that it is impossible to instantiate the Class externally.
+	 */
 	private Service()
 	{
 		
@@ -33,7 +41,7 @@ public class Service {
 	
 	/**
 	 * @author Momo
-	 *Gets the instance of a single Service object
+	 *Gets the instance of a single Service object. If it does not exist the method instantiates it.
 	 */
 	public static Service getInstance()
 	{
@@ -48,7 +56,7 @@ public class Service {
 	
 
 /**
- * Creates new order. Represents Register order from our use cases 
+ * Creates new order. Represents Register order from our use cases.
  */
 	
 	/**
@@ -66,50 +74,72 @@ public class Service {
 		return order;
 	}
 	
-	//returns a sorted list of the orders
+	/**
+	 * Returns a sorted ArrayList of the orders from the Data Base 
+	 */
 	public ArrayList<Order> getAllOrders()
 	{
 		return quicSort(dao.getOrder(), new OrderIDComparator());
 	}
-	 //Modify Order
+	 
+	/**
+	 * Modifies a single order 
+	 */
 	public void updateOrder(Order order,int totalWeight,int margin,Type lType){
 		
 		
 		dao.updateOrder(order,totalWeight,margin,lType);
 	}
 
-	//Remove Order
+	/**
+	 *Removes a specific order
+	 */
 	public void removeOrder(Order order)
 	{
 		dao.removeOrder(order);
 	}
-	//Create Trailer
+	
+	/**
+	 *Creates a Trailer object and stores it in the DataBase
+	 */
 	public  Trailer createTrailer(String truckID, String company,String driver,String driverPhNum,Type lType)
 	{
 		Trailer trailer=new Trailer(truckID, company, driver, driverPhNum, lType);
 		dao.addTrailer(trailer);
 		return trailer;
 	}
-	//Remove trailer(not a use case)
+	
+	/**
+	 *Removes a specific Trailer from the DataBase
+	 */
 	public void removeTrailer(Trailer trailer)
 	{
 		dao.removeTrailer(trailer);
 	}
 	
-	//Maintain trailer information
+	/**
+	 *Updates a specific Trailers's information 
+	 */
 	public void updateTrailer(Trailer trailer,Date arrivalTime,int restTime,boolean departed,int weighIn ,String truckID,String company,String driver,String driverPhNum,Type lType )
 	{
 		dao.updateTrailer(trailer,arrivalTime, restTime,departed ,weighIn, truckID, company, driver, driverPhNum, lType);	
 	}
 	
-	//not a use case
+	
+	/**
+	 *Creates and stores a new LoadingDock in the DataBase
+	 */
 	public LoadingDock createLoadingDock(int dockID,Type lType,Status lStatus)
 	{
 		LoadingDock loadingDock=new LoadingDock(dockID, lType, lStatus);
 		dao.addLoadingDock(loadingDock);
 		return loadingDock;
 	}
-	//not a use case
+	
+	
+	/**
+	 *Removes the specified LoadingDock from the DataBase
+	 */
 	public void removeLoadingDock(LoadingDock loadingDock)
 	{
 		dao.removeLoadingDock(loadingDock);
@@ -117,7 +147,8 @@ public class Service {
 	
 	/**
 	 * @author Momo
-	 *Creates a load which is connected to a suborder and is attached to a loading dock
+	 *Creates a load which is connected to a sub-order and is attached to a loading dock. 
+	 *Returns true if successful.
 	 */
 	/**
 	 * @param estStartTime
@@ -126,7 +157,6 @@ public class Service {
 	 * @param loadingDock
 	 * @return
 	 */
-	//included in the Register trailer
 	public boolean createLoad(Date estStartTime, Date estEndTime,Suborder suborder,LoadingDock loadingDock)
 	{
 //		if(estStartTime.compareTo(estEndTime)>=0 || estEndTime.getHours()==23L || estStartTime.getHours()<6L || loadingDock.getlStatus()==Status.CLOSED )
@@ -136,21 +166,27 @@ public class Service {
 		return true;
 		
 	}
-	//not a use case
+	
+	/**
+	 *Sets the actualBegTime of the specified load.
+	 */
 	public void beginLoad(Load load,LoadingDock loadingDock)
 	{
-		dao.updateLoad(load, load.getEstStartTime(), load.getEstEndTime(), loadingDock, load.isCompleted(), DU.createDate(), null);
+		dao.updateLoad(load, load.getEstStartTime(), 
+		load.getEstEndTime(), loadingDock, load.isCompleted(), DU.createDate(), null);
 		
 	}
 
 	/**
 	 * @author Momo
-	 *
+	 *Sets the actualEndTime of the specified Load, marks it as completed.
+	 * If it is the last completed load from a particular trailer the method returns true.
+	 * 
 	 */
-	//Load approved
     public boolean completeLoad(Load load, LoadingDock loadingDock,String trailerID)
     {
-    	dao.updateLoad(load, load.getEstStartTime(), load.getEstEndTime(), loadingDock, true, load.getActualBegTime(),DU.createDate());
+    	dao.updateLoad(load, load.getEstStartTime(), load.getEstEndTime(),
+    			loadingDock, true, load.getActualBegTime(),DU.createDate());
     	ArrayList<Trailer> trailers=dao.getAllTrailers();
     	 Trailer foundT = null;
     	 for(Trailer t : trailers){
@@ -171,7 +207,7 @@ public class Service {
         
 	/**
 	 * @author The smoking ace's
-	 *Creates a suborder belonging to order and that is attached to a Trailer s
+	 *Creates a sub-order belonging to order and that is attached to a Trailer s
 	 */
 	/**
 	 * @param loadingTime
@@ -181,24 +217,28 @@ public class Service {
 	 * @param lTrailer
 	 * @return
 	 */
-  //not a use case
 	public Suborder createSuborder(int loadingTime,int weight, Date loadingDate,Order order,Trailer lTrailer)
 	{
-		Suborder suborder=new Suborder(loadingTime, weight, loadingDate,lTrailer);
-		lTrailer.addlSuborders(suborder);
+	    Suborder suborder=new Suborder(loadingTime, weight, loadingDate,lTrailer);
 		dao.addSuborder(loadingTime, weight, loadingDate, order, lTrailer);
 		return suborder;
 	}
-	//not a use case
+	/**
+	 *Removes a sub-order from a specific order
+	 */
 	public void removeSuborder(Order order, Suborder suborder)
 	{
 		order.getlSuborder().remove(suborder);
 	}
 	
 	
-	//Register trailer as available
+	/**
+	 *Finds a particular trailer. Registers it by scheduling Loads for all it's Sub-orders.
+	 *Returns true if registration successful.
+	 */
 	public boolean registerIn(String trailerID, int weightIn,int restTime,String phoneNumb)
 	{
+		//checks for the parameters
 		if(restTime < 0 || restTime > 240)
 			return false;
 		if(phoneNumb.length() > 15 || phoneNumb.length() <= 0 ||trailerID.length() > 10 )
@@ -206,6 +246,7 @@ public class Service {
 		if(weightIn>14000 || weightIn<0)
 		return false;
 		
+		//finding the correct trailer from the database;
 	 ArrayList<Trailer> trailers=dao.getAllTrailers();
 	 ArrayList<LoadingDock> loadingDocks=getAvailableDocks();
 	 Trailer foundT = null;
@@ -248,9 +289,7 @@ public class Service {
 		}
 	
 		createLoad(DU.createDatePlusMinuts(plannedDate, 5), DU.createDatePlusMinuts(plannedDate, 5+s.getLoadingTime()), s,appropriateDock);
-		//s.setlLoad(load);
-		//beginLoad(load);
-		//loadToDock(load, appropriateDock);
+		
 		
 		
 		
@@ -263,8 +302,10 @@ public class Service {
 	
 	}
 	
-	//obsolete
-	//included in the register trailer case
+
+	/**
+	 *Deprecated 
+	 */
 	public void loadToDock(Load load,LoadingDock loadingDock)
 	{
 	
@@ -276,15 +317,20 @@ public class Service {
 	}
 	
 	//not a use case
+	/**
+	 * Finds the estimatedEndTime of  the last load from a specific LoadingDock
+	 * @param loadingDock
+	 * @return
+	 */
 	public Date findLastLoad(LoadingDock loadingDock)
 	{Date lastLoad = DU.createDate();
+	
 	
 		for( Load l:loadingDock.getlLoad())
 		{
 			if(l.getEstEndTime().compareTo(lastLoad)>0)
 			{	lastLoad=l.getEstEndTime();
 			
-			System.out.println("found");
 			}
 		}
 //	if(!loadingDock.getlLoad().isEmpty())
@@ -292,10 +338,13 @@ public class Service {
 //			
 //		return loadingDock.getlLoad().get(loadingDock.getlLoad().size()-1).getEstEndTime();
 //		}
-		System.out.println(lastLoad);
+		
 	return lastLoad;
 	}
-	//Register weight of the trailer before departure
+	
+	/**
+	 * Weighs out the specified Trailer and if it is successful returns true. 
+	 */
 	public boolean weightOut(Trailer trailer,int weightOut,int margin)
 	{
 		if(margin<0 || weightOut>26000)
@@ -315,7 +364,9 @@ public class Service {
 		}
 	}
 	
-	
+	/**
+	 *Signs out a Trailer and also weighs it out.
+	 */
 	public boolean signOut(String trailerID,int weightOut)
 	{
 		ArrayList<Trailer> trailers=dao.getAllTrailers();
@@ -344,20 +395,26 @@ public class Service {
 		else return false;
 		
 	}
-	//Get loading dock status
+	/**
+	 *Gets the specified LoadingDock Status.
+	 */
 	public Status DockStatus(LoadingDock loadingDock)
 	{
 		return loadingDock.getlStatus();
 	}
 	
-	//not a use case
+	/**
+	 *Swaps two elements in an ArrayList.
+	 */
 	private  <T> void swap(ArrayList<T> list, int i1, int i2)
 	{
 		T temp = list.get(i1);
 		list.set(i1, list.get(i2));
 		list.set(i2, temp);
 	}
-	//not a use case
+	/**
+	 * Wrapper method for the quick sorting.
+	 */
     public <T> ArrayList<T> quicSort(ArrayList<T> list,Comparator<T> comparator) 
     {
     	quicksortRec(list, comparator, 0, list.size()-1);
@@ -365,7 +422,9 @@ public class Service {
 		return list;
  
     }
-  //not a use case
+    /**
+	 *Quick sorts a partition from a specific ArrayList
+	 */
     private <T> void quicksortRec(ArrayList<T> list,Comparator<T> comparator, 
             int low, int high){
 
@@ -378,9 +437,6 @@ public class Service {
     		quicksortRec(list,comparator ,p+1, high);
     		}
     }	
-    
-    
-  //not a use case
     private <T>  int partition(ArrayList<T> list,Comparator<T> comparator, int low, int high)
 	{
 		T e = list.get(low);
@@ -402,7 +458,9 @@ public class Service {
 	}
     
     
-    //Get list of available trailers
+    /**
+	 *Gets an ArrayList of available trailers sorted by their IDs.
+	 */
     public ArrayList<Trailer> getAvailbleTrailers()
     {ArrayList<Trailer> availableTrailers = new ArrayList<Trailer>();
     	
@@ -415,7 +473,11 @@ public class Service {
      return quicSort(availableTrailers, new TrailerIDComparator());
     }
 
-    //Get list of loading times(from specific loading dock's loads)
+    /**
+     * Get list of loading times(from specific loading dock's loads)
+     * @param lDock
+     * @return
+     */
     public ArrayList<Load> getLoadsFrom(LoadingDock lDock)
      {ArrayList<Load> loads=new ArrayList<Load>();
       for(Load l: lDock.getlLoad())
@@ -425,7 +487,10 @@ public class Service {
       return quicSort(loads, new LoadTimeComparator());
     	
      }
-    //Get list of availabale docks
+    /**
+     * Get list of available docks
+     * @return
+     */
     public ArrayList<LoadingDock> getAvailableDocks()
     {
     	ArrayList<LoadingDock> loadingDocks=new ArrayList<LoadingDock>();
