@@ -50,7 +50,7 @@ public class SuborderDialog extends JDialog {
 	/**
 	 * Create the dialog.
 	 */
-	public SuborderDialog(Order order,Suborder suborder, JFrame owner, ModalityType modality) {
+	public SuborderDialog(Order order,Suborder suborder, JDialog owner, ModalityType modality) {
 		
 		
 		

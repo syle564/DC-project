@@ -3,6 +3,7 @@ package gui;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
@@ -49,12 +50,12 @@ public class HandleOrderPane extends JPanel {
 	private JComboBox<Type> cmbxCargo;
 	private DefaultComboBoxModel<Type> cmbxCargoModel;
 	private Controller controller;
-	private JFrame owner;
+	private JDialog owner;
 
 	/**
 	 * Create the panel.
 	 */
-	public HandleOrderPane(JFrame owner) {
+	public HandleOrderPane(JDialog owner) {
 		setLayout(null);
 		 
 		this.owner=owner;
@@ -196,7 +197,7 @@ public class HandleOrderPane extends JPanel {
 			}
 		}
 	}
-	private JFrame getFrame()
+	private JDialog getFrame()
 	{
 		return this.owner;
 	}

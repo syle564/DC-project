@@ -2,6 +2,7 @@ package service;
 
 import static org.junit.Assert.*;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 import model.LoadingDock;
@@ -13,6 +14,9 @@ import model.Type;
 
 import org.junit.Before;
 import org.junit.Test;
+
+import dao.DAO;
+import dao.JPADataBase;
 
 /**
  * @author tombernold
@@ -33,11 +37,17 @@ public class ServiceTest {
 	Date now=DU.createDate();
 	Date after4hours=DU.createDatePlusMinuts(now, 240);
 	Date inahour=DU.createDatePlusMinuts(now, 60);
-	
+	DAO dao=JPADataBase.getInstance();
+	ArrayList<Trailer> trailers=dao.getAllTrailers();
+	Trailer foundT;
 	
 	@Before
 	public void setUp() throws Exception {
 		
+		 for(Trailer t : trailers){
+				if(t.getTrailerID().equals("1")){
+					foundT = t;}}
+		 foundT.setWeighIn(10000);
 	}
 	/**
 	 * @author tombernold
@@ -60,9 +70,6 @@ public class ServiceTest {
 		Service.getInstance().registerIn("14", 3, 24, "4444");
 		for(Suborder s : t2.getlSuborders())
 			assertTrue(s.getlLoad()== null);
-		
-		
-		
 	}
 	
 	/**
@@ -289,10 +296,9 @@ public class ServiceTest {
 			}
 	@Test
 	public void testWeightOut_Test_1(){
-		t1.setWeighIn(10000);
-		s1.setWeight(14000);
-		o1.setMargin(10);
-			assertTrue(Service.getInstance().weightOut(t1, 24000, 10));
+		
+		foundT.setWeighIn(10000);
+			assertTrue(Service.getInstance().weightOut(t1, 14000, 10));
 	}
 	
 	

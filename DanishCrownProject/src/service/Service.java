@@ -252,9 +252,7 @@ public class Service {
 	 Trailer foundT = null;
 	 for(Trailer t : trailers){
 		if(t.getTrailerID().equals(trailerID)){
-			foundT = t;
-		
-			
+			foundT = t;	
 			dao.updateTrailer(foundT,DU.createDate(),restTime,false,weightIn
 					,foundT.getTrailerID(), foundT.getCompany(),foundT.getDriver(),phoneNumb, foundT.getlType());
 	foundT.setRestTime(restTime);
@@ -266,28 +264,35 @@ public class Service {
 	
 	 }
 	
+	 
 	 if(foundT!=null)
 	 {
+		 
 		 LoadingDock appropriateDock=null;
 		 for (LoadingDock lD : loadingDocks)
 		 {
 			 Date plannedDate1 = DU.createDate(1);
-			 if(findLastLoad(lD).compareTo(plannedDate1)<0)
+			 if(findLastLoad(lD).compareTo(plannedDate1)<0 &&
+					 lD.getlType().equals(foundT.getlType()) && !lD.getlStatus().equals(Status.CLOSED))
 					appropriateDock=lD;
+			 
+			 
+			 else{
+				 plannedDate1=findLastLoad(lD);
+			 }
 		 }
+		 
+		 if(appropriateDock==null)
+			{
+				
+				appropriateDock=loadingDocks.get(0);
+			}
 		 
 		 
 	for(Suborder s : foundT.getlSuborders()){
 		//finding the shortest queue 
-		
 		Date plannedDate=findLastLoad(appropriateDock); 
-		
-		if(appropriateDock==null)
-		{
-			
-			appropriateDock=loadingDocks.get(0);
-		}
-	
+		appropriateDock.setlStatus(Status.OCCUPIED);
 		createLoad(DU.createDatePlusMinuts(plannedDate, 5), DU.createDatePlusMinuts(plannedDate, 5+s.getLoadingTime()), s,appropriateDock);
 		
 		
@@ -326,6 +331,7 @@ public class Service {
 	{Date lastLoad = DU.createDate();
 	
 	
+	System.out.println(loadingDock);
 		for( Load l:loadingDock.getlLoad())
 		{
 			if(l.getEstEndTime().compareTo(lastLoad)>0)
@@ -333,11 +339,11 @@ public class Service {
 			
 			}
 		}
-//	if(!loadingDock.getlLoad().isEmpty())
-//	{
-//			
-//		return loadingDock.getlLoad().get(loadingDock.getlLoad().size()-1).getEstEndTime();
-//		}
+	if(!loadingDock.getlLoad().isEmpty())
+	{
+			
+		return loadingDock.getlLoad().get(loadingDock.getlLoad().size()-1).getEstEndTime();
+		}
 		
 	return lastLoad;
 	}
@@ -349,16 +355,20 @@ public class Service {
 	{
 		if(margin<0 || weightOut>26000)
 			return false;
+		System.out.println("1");
 		int totalWeight = 0;
+		
 		for(Suborder s : trailer.getlSuborders()){
 			totalWeight+= s.getWeight();
 			}
 		totalWeight+=trailer.getWeighIn();
 		if(totalWeight <= weightOut + margin && totalWeight > weightOut - margin  ){
+			System.out.println("3s");
 			trailer.setDeparted(true);
 			return true;
 		}
 		else{
+			System.out.println("2");
 			registerIn(trailer.getTrailerID(), trailer.getWeighIn(), trailer.getRestTime(),trailer.getDriverPhNum());
 			return false;
 		}

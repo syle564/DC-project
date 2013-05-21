@@ -10,6 +10,7 @@ import javax.swing.JButton;
 import javax.swing.table.DefaultTableModel;
 import model.Load;
 import model.LoadingDock;
+import model.Trailer;
 import service.DU;
 import service.Service;
 import java.awt.Component;
@@ -133,7 +134,9 @@ public class WareHousePanel extends JPanel {
 			Load load=(Load)table.getValueAt(table.getSelectedRow(), 6);
 			if(service.completeLoad(load, (LoadingDock)cmbSelectDock.getSelectedItem(), trailerID))
 				{updateTableView();
-				new Reminder(DU.createDate());
+				//extension ver1.2 restim thiny (1);
+				Trailer t=load.getlSuborder().getlTrailer();
+				new Reminder(DU.createDatePlusMinuts(t.getArrivalTime(), t.getRestTime()));
 				}
 			}
 			if(e.getSource()==cmbSelectDock)

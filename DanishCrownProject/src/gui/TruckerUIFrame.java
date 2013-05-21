@@ -7,6 +7,7 @@ import javax.print.attribute.standard.JobName;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JButton;
@@ -20,7 +21,7 @@ import java.awt.Color;
 import java.awt.Window.Type;
 import java.awt.Dialog.ModalExclusionType;
 
-public class TruckerUIFrame extends JFrame {
+public class TruckerUIFrame extends JDialog {
 
 	private JPanel contentPane;
 	private JTextField txtTrailerid;
@@ -48,10 +49,9 @@ public class TruckerUIFrame extends JFrame {
 		controller=new Controller();
 		
 		
-		
 		setIconImage(Toolkit.getDefaultToolkit().getImage(TruckerUIFrame.class.getResource("/resources/DCLogo.jpeg")));
 		setTitle("TruckerUI");
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 345, 300);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));

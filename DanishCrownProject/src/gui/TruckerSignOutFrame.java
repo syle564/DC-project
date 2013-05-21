@@ -11,13 +11,14 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JDialog;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.JButton;
 
 import service.Service;
 
-public class TruckerSignOutFrame extends JFrame {
+public class TruckerSignOutFrame extends JDialog {
 
 	private JPanel contentPane;
 	private JTextField txtTrailerID;
@@ -34,7 +35,7 @@ public class TruckerSignOutFrame extends JFrame {
 		controller=new Controller();
 		setTitle("Sign Out");
 		setIconImage(Toolkit.getDefaultToolkit().getImage(TruckerSignOutFrame.class.getResource("/resources/DCLogo.jpeg")));
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 205, 302);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
