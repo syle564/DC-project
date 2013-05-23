@@ -40,8 +40,6 @@ public void setDeparted(boolean departed) {
 	this.departed = departed;
 }
 
-
-
 public Trailer(String trailerID, String company, String driver,
 		String driverPhNum, Type lType) {
 	super();
@@ -53,9 +51,7 @@ public Trailer(String trailerID, String company, String driver,
 	lSuborders=new ArrayList<Suborder>();
 }
 
-public Trailer() {
-	
-}
+public Trailer() {}
 
 public String getTrailerID() {
 	return trailerID;
@@ -90,9 +86,6 @@ public void setDriverPhNum(String driverPhNum) {
 	this.driverPhNum = driverPhNum;
 }
 
-
-
-
 public int getWeighIn() {
 	return weighIn;
 }
@@ -109,8 +102,6 @@ public void setArrivalTime(Date arrivalTime) {
 	this.arrivalTime = arrivalTime;
 }
 
-
-
 public int getRestTime() {
 	return restTime;
 }
@@ -126,7 +117,6 @@ public Type getlType() {
 public void setlType(Type lType) {
 	this.lType = lType;
 }
-
 
 public List<Suborder> getlSuborders() {
 	return lSuborders;
@@ -145,7 +135,6 @@ public String toString() {
 	return "ID: " + trailerID + ", Cargo:"+lType;
 }
 
-
 /**
  *Compares two trailers by their ID 
  */
@@ -154,7 +143,4 @@ public int compareTo(String ID) {
 	
 	return this.trailerID.compareTo(ID);
 }
-
-
-
 }

@@ -85,22 +85,12 @@ public class HandleOrderPane extends JPanel {
 		
 		lblType = new JLabel("Type :");
 		lblType.setBounds(10, 228, 46, 14);
-		add(lblType);
-		
+		add(lblType);		
 		
 		btnSave = new JButton("Save");
 		btnSave.addActionListener(controller);
 		btnSave.setBounds(10, 301, 89, 23);
 		add(btnSave);
-		
-//		btnModifysub = new JButton("ModifySub");
-//		btnModifysub.setBounds(194, 188, 89, 23);
-//		add(btnModifysub);
-		
-//		btnRemovesub = new JButton("RemoveSub");
-//		btnRemovesub.addActionListener(controller);
-//		btnRemovesub.setBounds(194, 219, 89, 23);
-//		add(btnRemovesub);
 		
 		btnAddsub = new JButton("AddSub");
 		btnAddsub.addActionListener(controller);
@@ -166,7 +156,6 @@ public class HandleOrderPane extends JPanel {
 		cmbxCargo.setModel(cmbxCargoModel);
 		
 		fillOrders();
-
 	}
 	
 	private void fillOrders()
@@ -175,8 +164,7 @@ public class HandleOrderPane extends JPanel {
 		for(Order o:Service.getInstance().getAllOrders())
 		{
 			ordersModel.addElement(o);
-		}
-		
+		}		
 	}
 	
 	private void fillSubOrders()
@@ -196,22 +184,16 @@ public class HandleOrderPane extends JPanel {
 	}
 	private class Controller implements ActionListener, ListSelectionListener
 	{
-
 		@Override
 		public void actionPerformed(ActionEvent e) {
 		        if(e.getSource()==btnAddsub)
-		        {
-		        	
+		        {		        	
 		        	SuborderDialog subDioalog=new SuborderDialog(lstOrders.getSelectedValue(),lstSub.getSelectedValue(),getFrame(), ModalityType.DOCUMENT_MODAL);
 		        	subDioalog.setVisible(true);
 		        	if(subDioalog.getSuborder()!=null)
 		        	lstOrders.getSelectedValue().addSuborder(subDioalog.getSuborder());
-		        	fillSubOrders();
-		        	
-		        }
-		        
-		      
-		        
+		        	fillSubOrders();		        	
+		        }		       		      		        
 		        if(e.getSource()==btnUpdate)
 		        {
 		        	Order order=lstOrders.getSelectedValue();
@@ -228,14 +210,12 @@ public class HandleOrderPane extends JPanel {
 						i=2;
 					cmbxCargo.setSelectedIndex(i);
 		        	
-		        }
-		        
+		        }		        
 		        if(e.getSource()==btnDeleteord)
 		        {
 		        	Service.getInstance().removeOrder(lstOrders.getSelectedValue());
 		        	fillOrders();
-		        }
-		        
+		        }		        
 		        if(e.getSource()==btnSave)
 		        {
 		        	if(lstOrders.getSelectedIndex()!=-1)
@@ -249,12 +229,9 @@ public class HandleOrderPane extends JPanel {
 		        			Integer.parseInt(txtTotalweight.getText()) , Integer.parseInt(txtMargin.getText())
 		        			,(Type) cmbxCargo.getSelectedItem());
 		        	fillOrders();
-		        }
-		        
-		       
+		        }		        		       
 		        if(e.getSource()==btnSearchordid)
 		        {
-
 					Order found = null;
 
 					String target= txtSearchordid.getText();
@@ -274,11 +251,9 @@ public class HandleOrderPane extends JPanel {
 						else
 							left = middle + 1;
 					}
-
 					if(found!=null)
 					{lstOrders.setSelectedValue(found, true);}
-		        }
-			
+		        }			
 		}
 
 		@Override
@@ -287,9 +262,6 @@ public class HandleOrderPane extends JPanel {
 			{
 				fillSubOrders();
 			}
-		}
-		
-	}
-	
-
+		}		
+	}	
 }

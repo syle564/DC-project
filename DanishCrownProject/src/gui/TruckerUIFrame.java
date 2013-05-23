@@ -13,8 +13,6 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.Color;
-import java.awt.Window.Type;
-import java.awt.Dialog.ModalExclusionType;
 
 public class TruckerUIFrame extends JDialog {
 
@@ -31,19 +29,12 @@ public class TruckerUIFrame extends JDialog {
 	private JTextField txtWeightIn;
 	private JLabel lblWeghtIn;
 
-
-	/**
-	 * Launch the application.
-	 */
-	
-
 	/**
 	 * Create the frame.
 	 */
 	public TruckerUIFrame() {
 		controller=new Controller();
-		
-		
+			
 		setIconImage(Toolkit.getDefaultToolkit().getImage(TruckerUIFrame.class.getResource("/resources/DCLogo.jpeg")));
 		setTitle("TruckerUI");
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -131,11 +122,7 @@ public class TruckerUIFrame extends JDialog {
 							lblFound.setText("Invalid ID");
 					}
 				}
-			}
-			
-		}
-
-		
-		
+			}			
+		}				
 	}
 }

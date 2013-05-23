@@ -25,17 +25,14 @@ public class LoadingDock {
 	@JoinColumn
 	private List<Load> lLoad = new ArrayList<Load>();
 	
-	public LoadingDock() {
-		
-	}
+	public LoadingDock() {}
 
 	public LoadingDock(int dockID, Type lType, Status lStatus) {
 		super();
 		this.dockID = dockID;
 		this.lType = lType;
 		this.lStatus = lStatus;
-	}
-	
+	}	
 	
 	public int getDockID() {
 		return dockID;
@@ -77,7 +74,4 @@ public class LoadingDock {
 	public String toString() {
 		return "DockID:" + dockID ;
 	}
-
-	
-
 }

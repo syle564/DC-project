@@ -9,7 +9,6 @@ import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
-
 @Entity
 public class Suborder {
 	@Id 
@@ -57,9 +56,7 @@ public class Suborder {
 	public void setLoadingDate(Date loadingDate) {
 		this.loadingDate = loadingDate;
 	}
-	
-	
-	
+			
 	public Trailer getlTrailer() {
 		return lTrailer;
 	}
@@ -76,15 +73,9 @@ public class Suborder {
 		this.lLoad = lLoad;
 	}
 	
-
 	@Override
 	public String toString() {
 		return "Suborder [loadingTime=" + loadingTime + ", weight=" + weight
 				+ ", loadingDate=" + loadingDate + "]";
 	}
-
-	
-	
-	
-
 }

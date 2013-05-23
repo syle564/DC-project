@@ -15,10 +15,6 @@ public class WareHouseUI extends JDialog {
 	private JTabbedPane tabbedPane;
 
 	/**
-	 * Launch the application.
-	 */
-
-	/**
 	 * Create the frame.
 	 */
 	public WareHouseUI() {
@@ -37,5 +33,4 @@ public class WareHouseUI extends JDialog {
 		
 	    tabbedPane.add("Loading Times",wareHousePanel);
 	}
-
 }

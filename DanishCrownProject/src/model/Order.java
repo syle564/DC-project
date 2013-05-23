@@ -3,7 +3,6 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.jws.Oneway;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -12,10 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.Table;
-
-
 
 @Entity
 @Table(name="\"ORDER\"")
@@ -31,9 +27,8 @@ public class Order {
 	@JoinColumn
 	private List <Suborder> lSuborder = new ArrayList<Suborder>(); 
 	
+	public Order() {}
 	
-	public Order() {
-	}
 	public Order(int orderID, int totalWeight, int margin, Type lType) {
 		super();
 		this.orderID = orderID;
@@ -90,8 +85,6 @@ public class Order {
 		return "Order [OrderID=" + orderID + ", totalWeight=" + totalWeight
 				+ ", margin=" + margin + "]";
 	}
-
-	
 	}
 	
 

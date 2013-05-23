@@ -6,11 +6,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JButton;
 import javax.swing.JLabel;
-import javax.swing.JPanel;
 import javax.swing.UIManager;
-import javax.xml.bind.annotation.XmlElement.DEFAULT;
-
-import model.Load;
 import model.LoadingDock;
 import model.Order;
 import model.Status;
@@ -18,13 +14,9 @@ import model.Suborder;
 import model.Trailer;
 import model.Type;
 import service.DU;
-import service.LoadTimeComparator;
 import service.Service;
-import dao.DataBase;
-
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.util.Comparator;
 import java.awt.Toolkit;
 
 
@@ -36,7 +28,6 @@ public class MainFrame {
 			System.out.println("Error setting look & feel: " + e.getMessage());
 		}
 	}
-
 
 	private JFrame frmDanishCrownProject;
 	private JButton btnDanishPlannerUi;
@@ -104,8 +95,7 @@ public class MainFrame {
 	 */
 	private void initialize() {
 		controller=new Controller();
-		
-		
+				
 		frmDanishCrownProject = new JFrame();
 		frmDanishCrownProject.setIconImage(Toolkit.getDefaultToolkit().getImage(MainFrame.class.getResource("/resources/DCLogo.jpeg")));
 		frmDanishCrownProject.setTitle("Danish Crown Project");
@@ -136,10 +126,7 @@ public class MainFrame {
 		lblDclogo = new JLabel("DClogo");
 		lblDclogo.setIcon(new ImageIcon(MainFrame.class.getResource("/resources/DCLogo_2.jpg")));
 		lblDclogo.setBounds(0, 0, 551, 327);
-		frmDanishCrownProject.getContentPane().add(lblDclogo);
-		
-			
-		 
+		frmDanishCrownProject.getContentPane().add(lblDclogo);							 
 	}
 	/** 
 	 *Custom Event Listener
@@ -154,7 +141,6 @@ public class MainFrame {
 				 wareHouseUI=new WareHouseUI();
 				wareHouseUI.setVisible(true);
 			}
-			
 			
 			if(e.getSource()==btnTruckerUi)
 			{
@@ -172,7 +158,6 @@ public class MainFrame {
 				truckerSignOutFrame =new TruckerSignOutFrame();
 				truckerSignOutFrame.setVisible(true);
 			}
-		}
-		
+		}		
 	}
 }

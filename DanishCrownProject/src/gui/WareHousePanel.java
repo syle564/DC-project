@@ -34,15 +34,12 @@ public class WareHousePanel extends JPanel {
 	private Controller controller = new Controller(); 
 
 	private Service  service=Service.getInstance();
+	
 	/**
 	 * Create the panel.
 	 */
 	public WareHousePanel() {
-		setLayout(null);
-		
-		
-		
-		
+		setLayout(null);		
 		scrollPane = new JScrollPane();
 		scrollPane.setBounds(30, 59, 645, 204);
 		add(scrollPane);
@@ -130,10 +127,8 @@ public class WareHousePanel extends JPanel {
 			if(e.getSource()==cmbSelectDock)
 			{
 				updateTableView();
-			}
-			
-		}
-	
+			}			
+		}	
 }
 	
 	
@@ -142,8 +137,7 @@ public class WareHousePanel extends JPanel {
 
 	    public Reminder(Date timeOfExecution) {
 	        timer = new Timer();
-	        timer.schedule(new RemindTask(), timeOfExecution );
-		
+	        timer.schedule(new RemindTask(), timeOfExecution );		
 	    }
 
 	    class RemindTask extends TimerTask {
