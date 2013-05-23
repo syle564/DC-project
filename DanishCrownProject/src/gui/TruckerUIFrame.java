@@ -1,9 +1,6 @@
 package gui;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
 
-import javax.print.attribute.standard.JobName;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
@@ -11,9 +8,7 @@ import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JButton;
-
 import service.Service;
-
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;

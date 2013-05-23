@@ -16,7 +16,6 @@ import service.Service;
 import java.awt.Component;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.EventListener;
 import java.util.Timer;
@@ -112,11 +111,6 @@ public class WareHousePanel extends JPanel {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			if(e.getSource()== btnBeginLoad){
-			Date estStartDate=(Date)table.getValueAt(table.getSelectedRow(), 0);
-			Date estEndDate=(Date)table.getValueAt(table.getSelectedRow(), 1);
-			Date actualStartTime=(Date)table.getValueAt(table.getSelectedRow(), 2);
-			Date actualEndTime=(Date)table.getValueAt(table.getSelectedRow(), 3);
-			boolean isCompleted=(boolean)table.getValueAt(table.getSelectedRow(), 4);
 			Load load=(Load)table.getValueAt(table.getSelectedRow(), 6);
 			service.beginLoad(load, (LoadingDock)cmbSelectDock.getSelectedItem());
 			updateTableView();
@@ -125,16 +119,10 @@ public class WareHousePanel extends JPanel {
 			
 			if(e.getSource()==btnLoadApproved)
 			{
-//				Date estStartDate=(Date)table.getValueAt(table.getSelectedRow(), 0);
-//			Date estEndDate=(Date)table.getValueAt(table.getSelectedRow(), 1);
-//			Date actualStartTime=(Date)table.getValueAt(table.getSelectedRow(), 2);
-//			Date actualEndTime=(Date)table.getValueAt(table.getSelectedRow(), 3);
-//			boolean isCompleted=(boolean)table.getValueAt(table.getSelectedRow(), 4);
 			String trailerID=(String)table.getValueAt(table.getSelectedRow(), 5);
 			Load load=(Load)table.getValueAt(table.getSelectedRow(), 6);
 			if(service.completeLoad(load, (LoadingDock)cmbSelectDock.getSelectedItem(), trailerID))
 				{updateTableView();
-				//extension ver1.2 restim thiny (1);
 				Trailer t=load.getlSuborder().getlTrailer();
 				new Reminder(DU.createDatePlusMinuts(t.getArrivalTime(), t.getRestTime()));
 				}

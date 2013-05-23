@@ -57,29 +57,28 @@ public class MainFrame {
 	public static void main(String[] args) {
 		
 		Service service=Service.getInstance();
-	LoadingDock loadingD=service.createLoadingDock(1, Type.BOX, Status.OPEN);
-	LoadingDock loadingD2=service.createLoadingDock(2, Type.BOX, Status.OPEN);
+	    LoadingDock loadingD1=service.createLoadingDock(1, Type.BOX, Status.OPEN);
+	    LoadingDock loadingD2=service.createLoadingDock(2, Type.BOX, Status.OPEN);
+	    LoadingDock loadingD3=service.createLoadingDock(3, Type.CHRISTMAS_TREE, Status.OPEN);
+	    LoadingDock loadingD4=service.createLoadingDock(4, Type.CHRISTMAS_TREE, Status.OPEN);
+	    LoadingDock loadingD5=service.createLoadingDock(5, Type.BIN, Status.OPEN);
+	    LoadingDock loadingD6=service.createLoadingDock(6, Type.BIN, Status.OPEN);
 		Order o1=service.createOrder(1, 2000, 10, Type.BOX);
-		Trailer t1=service.createTrailer("1", "Cock", "Douche", "23123", Type.BOX);
-		Suborder s1=service.createSuborder(30, 200, DU.createDate(), o1, t1);
-		Trailer t2=service.createTrailer("10", "Cock", "Douche", "23123", Type.BOX);
-		Trailer t3=service.createTrailer("5", "Cock", "Douche", "23123", Type.BOX);
-		Trailer t4=service.createTrailer("4", "Cock", "Douche", "23123", Type.CHRISTMAS_TREE);
-		Suborder s2=service.createSuborder(25, 200, DU.createDate(), o1, t2);
-		//service.registerIn("1", 100, 30);
+		Order o2=service.createOrder(2, 2000, 10, Type.CHRISTMAS_TREE);
+		Order o3=service.createOrder(3, 2000, 10, Type.BIN);
+		Trailer t1=service.createTrailer("1", "David", "Fletcher", "310-808-5243", Type.BOX);
+		Trailer t2=service.createTrailer("2", "Bob", "Michel", "415-846-1688", Type.BOX);
+		Trailer t3=service.createTrailer("3", "Jim", "Bravo", "720-318-9049", Type.CHRISTMAS_TREE);
+		Trailer t4=service.createTrailer("4", "Adam", "Hall", "323-216-2201", Type.CHRISTMAS_TREE);
+		Trailer t5=service.createTrailer("5", "Steve", "Tailer", "305-245-1641", Type.BIN);
+		Trailer t6=service.createTrailer("6", "Finn", "Peir", "365-245-1641", Type.BIN);
+		Suborder s1=service.createSuborder(30, 1000, DU.createDate(), o1, t1);
+		Suborder s2=service.createSuborder(25, 1000, DU.createDate(), o1, t1);
+		Suborder s3=service.createSuborder(25, 1000, DU.createDate(), o2, t2);
+		Suborder s4=service.createSuborder(25, 1000, DU.createDate(), o2, t2);
+		Suborder s5=service.createSuborder(25, 2000, DU.createDate(), o3, t3);
 		
-	//	Trailer t3=service.createTrailer("2", "Cock", "Douche", "23123", Type.BIN);
-		//service.beginLoad(s1.getlLoad());
-		//service.beginLoad(s2.getlLoad());
-	//	for(LoadingDock l:DataBase.getInstance().getAllLoadingDocks() )
-			
-			//System.out.println(l.getlLoad());
-
-	//	service.completeLoad(s1);
-		//System.out.println(s1.getlLoad());
-	//	Comparator c=new LoadTimeComparator();
 		
-		//loadingD.addLoad(new Load(DU.createDate(), DU.createDate()));
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -142,8 +141,7 @@ public class MainFrame {
 			
 		 
 	}
-	/**
-	 * @author Momo
+	/** 
 	 *Custom Event Listener
 	 */
  private class Controller implements ActionListener

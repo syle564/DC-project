@@ -147,7 +147,6 @@ public String toString() {
 
 
 /**
- * @author The Smokiing ace's
  *Compares two trailers by their ID 
  */
 @Override

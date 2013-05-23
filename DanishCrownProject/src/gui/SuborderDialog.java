@@ -1,28 +1,21 @@
 package gui;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
-import java.awt.Container;
 import java.awt.FlowLayout;
-
 import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import javax.swing.DefaultListModel;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JScrollPane;
 import javax.swing.JList;
-
 import service.DU;
 import service.Service;
-
 import model.Order;
 import model.Suborder;
 import model.Trailer;
-
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -142,8 +135,10 @@ public class SuborderDialog extends JDialog {
 	private void fillTrailers()
 	{
 		trailerModel.clear();
+		
 		for(Trailer t:Service.getInstance().getAvailbleTrailers())
 		{
+			if(order.getlType().equals(t.getlType()))
 			trailerModel.addElement(t);
 		}
 	}

@@ -4,12 +4,10 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.JComboBox;
 import javax.swing.JDialog;
-import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JButton;
-
 import java.awt.Dialog.ModalityType;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -17,12 +15,9 @@ import javax.swing.JScrollPane;
 import javax.swing.JList;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
-
 import service.Service;
-
 import model.Order;
 import model.Suborder;
-import model.Trailer;
 import model.Type;
 
 public class HandleOrderPane extends JPanel {
@@ -34,8 +29,6 @@ public class HandleOrderPane extends JPanel {
 	private JLabel lblMargin;
 	private JLabel lblType;
 	private JButton btnSave;
-	private JButton btnModifysub;
-	private JButton btnRemovesub;
 	private JButton btnAddsub;
 	private JButton btnSearchordid;
 	private JButton btnUpdate;

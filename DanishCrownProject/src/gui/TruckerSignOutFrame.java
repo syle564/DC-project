@@ -1,21 +1,17 @@
 package gui;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.EventQueue;
 
+import java.awt.Color;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-
 import javax.swing.JDialog;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.JButton;
-
 import service.Service;
 
 public class TruckerSignOutFrame extends JDialog {

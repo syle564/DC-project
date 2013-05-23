@@ -28,6 +28,7 @@ public class Order {
 	@Enumerated(EnumType.STRING)
 	private Type lType;
 	@OneToMany(cascade=CascadeType.PERSIST)
+	@JoinColumn
 	private List <Suborder> lSuborder = new ArrayList<Suborder>(); 
 	
 	

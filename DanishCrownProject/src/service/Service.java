@@ -20,10 +20,7 @@ import java.util.Date;
 
 
 
-/**
- * @author Momo
- *
- */
+
 public class Service {
 
 	private static Service instance;
@@ -31,7 +28,6 @@ public class Service {
 	private DAO dao=JPADataBase.getInstance(); 
 	
 	/**
-	 * @author Momo
 	 *The constructor is private so that it is impossible to instantiate the Class externally.
 	 */
 	private Service()
@@ -40,7 +36,6 @@ public class Service {
 	}
 	
 	/**
-	 * @author Momo
 	 *Gets the instance of a single Service object. If it does not exist the method instantiates it.
 	 */
 	public static Service getInstance()
@@ -66,7 +61,6 @@ public class Service {
 	 * @param lType
 	 * @return
 	 */
-	// Register Order
 	public Order createOrder(int orderId, int totalWeight, int margin, model.Type lType)
 	{
 		Order order=new Order(orderId,totalWeight,margin,lType);
@@ -146,7 +140,6 @@ public class Service {
 	}
 	
 	/**
-	 * @author Momo
 	 *Creates a load which is connected to a sub-order and is attached to a loading dock. 
 	 *Returns true if successful.
 	 */
@@ -178,10 +171,8 @@ public class Service {
 	}
 
 	/**
-	 * @author Momo
 	 *Sets the actualEndTime of the specified Load, marks it as completed.
 	 * If it is the last completed load from a particular trailer the method returns true.
-	 * 
 	 */
     public boolean completeLoad(Load load, LoadingDock loadingDock,String trailerID)
     {
@@ -206,7 +197,6 @@ public class Service {
     }
         
 	/**
-	 * @author The smoking ace's
 	 *Creates a sub-order belonging to order and that is attached to a Trailer s
 	 */
 	/**
@@ -331,7 +321,7 @@ public class Service {
 	{Date lastLoad = DU.createDate();
 	
 	
-	System.out.println(loadingDock);
+	
 		for( Load l:loadingDock.getlLoad())
 		{
 			if(l.getEstEndTime().compareTo(lastLoad)>0)
@@ -353,9 +343,9 @@ public class Service {
 	 */
 	public boolean weightOut(Trailer trailer,int weightOut,int margin)
 	{
-		if(margin<0 || weightOut>26000)
+		if(margin<0 || weightOut>26000 || trailer.isDeparted())
 			return false;
-		System.out.println("1");
+		
 		int totalWeight = 0;
 		
 		for(Suborder s : trailer.getlSuborders()){
@@ -363,12 +353,12 @@ public class Service {
 			}
 		totalWeight+=trailer.getWeighIn();
 		if(totalWeight <= weightOut + margin && totalWeight > weightOut - margin  ){
-			System.out.println("3s");
+			
 			trailer.setDeparted(true);
 			return true;
 		}
 		else{
-			System.out.println("2");
+			
 			registerIn(trailer.getTrailerID(), trailer.getWeighIn(), trailer.getRestTime(),trailer.getDriverPhNum());
 			return false;
 		}

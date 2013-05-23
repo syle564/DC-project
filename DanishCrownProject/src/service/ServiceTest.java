@@ -18,10 +18,7 @@ import org.junit.Test;
 import dao.DAO;
 import dao.JPADataBase;
 
-/**
- * @author tombernold
- *
- */
+
 public class ServiceTest {
 	
 	Service service=Service.getInstance();
@@ -50,7 +47,6 @@ public class ServiceTest {
 		 foundT.setWeighIn(10000);
 	}
 	/**
-	 * @author tombernold
 	 *Fills in trailer ID, fills in weighIN,fills in rest time, fills in phone number
 	 */
 	@Test
@@ -62,7 +58,6 @@ public class ServiceTest {
 		
 	}
 	/**
-	 * @author tombernold
 	 * Wrong Id entry
 	 */
 	@Test
@@ -73,7 +68,6 @@ public class ServiceTest {
 	}
 	
 	/**
-	 * @author tombernold
 	 * Test if rest time was invalid
 	 */
 	@Test
@@ -83,7 +77,6 @@ public class ServiceTest {
 			assertTrue(Service.getInstance().registerIn("5", 3, -1, "4444")==false);
 }
 	/**
-	 * @author tombernold
 	 * Test if to many characters were entered
 	 */ 
 	@Test
@@ -95,7 +88,6 @@ public class ServiceTest {
 	}
 	
 	/**
-	 * @author tombernold
 	 * Test if fields are blank
 	 */
 	@Test
