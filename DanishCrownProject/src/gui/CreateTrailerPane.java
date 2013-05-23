@@ -1,7 +1,7 @@
 package gui;
 
 import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;s
+import java.awt.event.ActionListener;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.DefaultListModel;
 import javax.swing.JPanel;
