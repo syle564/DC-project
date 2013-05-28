@@ -25,7 +25,7 @@ public class Service {
 
 	private static Service instance;
 
-	private DAO dao=DataBase.getInstance(); 
+	private DAO dao=JPADataBase.getInstance(); 
 	
 	/**
 	 *The constructor is private so that it is impossible to instantiate the Class externally.
